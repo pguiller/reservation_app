@@ -14,6 +14,7 @@ import { AppDispatch } from 'src/store/store';
 import { useDispatch } from 'react-redux';
 import { createPalette } from 'src/theme/create-palette';
 import grey from '@mui/material/colors/grey';
+import 'typeface-cormorant';
 
 declare module '@mui/material/styles' {
   interface ThemeOptions {
@@ -53,7 +54,7 @@ export default function MUIWrapper({
         dispatch(switchThemeMode(mode === 'light' ? 'dark' : 'light'));
       },
     }),
-    []
+    [],
   );
   const palette = createPalette(mode);
 
@@ -77,19 +78,20 @@ export default function MUIWrapper({
           direction: locale.direction,
           palette,
           typography: {
-            // fontFamily: "'Open Sans', sans-serif",
             fontSize: 14,
             h1: {
               fontWeight: 600,
-              fontSize: '2.5rem',
+              fontSize: '4rem',
               lineHeight: 1.2,
               letterSpacing: '-0.01562em',
+              fontFamily: ['Cormorant', 'serif'].join(','),
             },
             h2: {
               fontWeight: 600,
               fontSize: '2rem',
               lineHeight: 1.3,
               letterSpacing: '-0.00833em',
+              fontFamily: ['Cormorant', 'serif'].join(','),
             },
             h3: {
               fontWeight: 600,
@@ -114,6 +116,7 @@ export default function MUIWrapper({
               fontSize: '1rem',
               lineHeight: 1.6,
               letterSpacing: '0.0075em',
+              fontFamily: ['Cormorant', 'serif'].join(','),
             },
             body1: {
               fontWeight: 700,
@@ -126,6 +129,7 @@ export default function MUIWrapper({
               fontSize: '0.875rem',
               lineHeight: 1.43,
               letterSpacing: '0.01071em',
+              fontFamily: ['Cormorant', 'serif'].join(','),
             },
           },
           shape: {
@@ -153,7 +157,7 @@ export default function MUIWrapper({
                           thumb: grey[400],
                           active: grey[400],
                         }
-                      : undefined
+                      : undefined,
                   ),
                   scrollbarWidth: 'thin',
                 },
@@ -202,9 +206,9 @@ export default function MUIWrapper({
         },
         locale.muiCore as any,
         locale.muiDatePicker,
-        locale.muiDataGrid
+        locale.muiDataGrid,
       ),
-    [mode, locale]
+    [mode, locale],
   );
 
   return (

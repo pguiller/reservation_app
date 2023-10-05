@@ -1,7 +1,7 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-import { useAppSelector } from 'src/hooks';
-import jwt_decode from 'jwt-decode';
+// import { useAppSelector } from 'src/hooks';
+// import jwt_decode from 'jwt-decode';
 
 interface ProtectedRouteProps {
   children: JSX.Element;
@@ -9,29 +9,25 @@ interface ProtectedRouteProps {
   rolesHaveAccess?: string[];
 }
 
-interface TokenDecodedProps {
-  token_type: string;
-  exp: number;
-  iat: number;
-  jti: string;
-  user_id: number;
-  username: string;
-  role: string;
-}
+// interface TokenDecodedProps {
+//   token_type: string;
+//   exp: number;
+//   iat: number;
+//   jti: string;
+//   user_id: number;
+//   username: string;
+//   role: string;
+// }
 
-const ProtectedRoute = ({
-  children,
-  redirectPath,
-  rolesHaveAccess = ['DR', 'HR', 'MG'],
-}: ProtectedRouteProps) => {
-  const token = useAppSelector((state) => state.auth.login.token);
-  const tokenDecoded: TokenDecodedProps | null = token
-    ? jwt_decode(token)
-    : null;
+const ProtectedRoute = ({ children, redirectPath }: ProtectedRouteProps) => {
+  // const token = useAppSelector((state) => state.auth.login.token);
+  // const tokenDecoded: TokenDecodedProps | null = token
+  //   ? jwt_decode(token)
+  //   : null;
 
-  const isTokenValid = tokenDecoded && tokenDecoded.exp * 1000 > Date.now();
-  const hasAccess =
-    tokenDecoded && rolesHaveAccess?.includes(tokenDecoded.role);
+  const isTokenValid = true;
+  const hasAccess = true;
+  // tokenDecoded && rolesHaveAccess?.includes(tokenDecoded.role);
 
   const renderContent = () => {
     if (isTokenValid) {

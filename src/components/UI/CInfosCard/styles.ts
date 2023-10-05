@@ -11,11 +11,12 @@ export const cInfosCardStyles = (theme: Theme): CInfosCardStyles => ({
   card: {
     padding: theme.spacing(2),
     borderRadius: theme.shape.borderRadius,
-    backgroundColor: theme.palette.background.paper,
-    color: theme.palette.primary.main,
+    backgroundColor: theme.palette.primary.dark,
+    color: 'white',
     minHeight: 50,
     display: 'flex',
     alignItems: 'center',
+    justifyContent: 'space-between',
   },
   button: (disabled) => ({
     display: 'flex',

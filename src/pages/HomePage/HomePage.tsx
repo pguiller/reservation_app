@@ -1,165 +1,55 @@
-import React, { useCallback, useEffect } from 'react';
+import React from 'react';
 import {
-  AppBar,
   Box,
   Container,
-  Drawer,
   IconButton,
-  Toolbar,
   Typography,
   useTheme,
 } from '@mui/material';
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from 'src/store/store';
-import useMenuAnchors from 'src/hooks/useMenuAnchors';
-import AppBarMenu from 'src/components/UI/AppBarMenu/AppBarMenu';
-import MenuIcon from '@mui/icons-material/Menu';
-import LogoutIcon from '@mui/icons-material/Logout';
-import { menu1 } from 'src/utils/menu';
-import useIsTablet from 'src/hooks/useIsTablet';
-import CAccordionMenu from 'src/components/UI/CAccordionMenu/CAccordionMenu';
-import {
-  leftMenuOpened,
-  switchThemeMode,
-} from 'src/store/navigation/navigationSlice';
 import { homePageStyles } from './styles';
-import { useAppSelector } from 'src/hooks';
-import { resetLoginRequest } from 'src/store/auth/authSlices/loginSlice';
-import HomeIcon from '@mui/icons-material/Home';
-import WbSunnyIcon from '@mui/icons-material/WbSunny';
-import NightlightIcon from '@mui/icons-material/Nightlight';
+import LogoutIcon from '@mui/icons-material/Logout';
 import { useNavigate } from 'react-router';
-import { Stage } from 'src/utils/types/MenuStage';
-import { getUserInfosAsync } from 'src/store/auth/authAsync';
-import CSwitch from 'src/components/UI/CSwitch/CSwitch';
+import useIsMobile from 'src/hooks/useIsMobile';
+import line from 'src/assets/images/line.png';
+import logo from 'src/assets/images/logo512.png';
+
 interface Props {
   children?: React.ReactNode;
 }
 
 const HomePage: React.FC<Props> = ({ children }) => {
-  const { anchorEls, handleOpenMenu, handleCloseMenu } = useMenuAnchors();
-  const dispatch = useDispatch<AppDispatch>();
-  const isTablet = useIsTablet();
   const theme = useTheme();
-
-  const mode = useAppSelector((state) => state.nav.themeMode);
-  const [checked, setChecked] = React.useState(mode === 'dark');
-
-  const menuOpen = useAppSelector((state) => state.nav.leftMenuOpened);
-  const user = useAppSelector((state) => state.auth.login.user);
   const navigate = useNavigate();
-
-  const handleSwitchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setChecked(event.target.checked);
-    dispatch(switchThemeMode(mode === 'light' ? 'dark' : 'light'));
-  };
-
-  const displayTabletMenu = () => {
-    dispatch(leftMenuOpened(!menuOpen));
-  };
-
-  const handleGetUserInfos = useCallback(() => {
-    dispatch(getUserInfosAsync());
-  }, [dispatch]);
-
-  useEffect(() => {
-    handleGetUserInfos();
-  }, [handleGetUserInfos]);
-
-  const roleHaveAccessMenu: Stage[] = menu1;
+  const isMobile = useIsMobile();
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
-      <AppBar data-testid="AppBar" position="static" component="nav">
-        <Toolbar sx={homePageStyles(theme).toolBar}>
-          <Box sx={homePageStyles(theme).container}>
-            <Box sx={homePageStyles(theme).pagesContainer}>
-              <IconButton
-                onClick={() => navigate('/')}
-                sx={homePageStyles(theme).buttonIcon}
-              >
-                <HomeIcon />
-              </IconButton>
-              {isTablet && (
-                <>
-                  <IconButton
-                    onClick={() => displayTabletMenu()}
-                    sx={homePageStyles(theme).buttonIcon}
-                  >
-                    <MenuIcon />
-                  </IconButton>
-                  <Drawer
-                    anchor="left"
-                    open={menuOpen}
-                    onClose={displayTabletMenu}
-                    sx={homePageStyles(theme).drawer}
-                  >
-                    <CAccordionMenu />
-                  </Drawer>
-                </>
-              )}
-              {!isTablet && (
-                <Box sx={homePageStyles(theme).menuContainer}>
-                  <AppBarMenu
-                    menuName="Menu1"
-                    url="menu1"
-                    menuItems={roleHaveAccessMenu}
-                    anchorEl={anchorEls.menu1}
-                    onOpen={(
-                      event: React.MouseEvent<HTMLElement, MouseEvent>
-                    ) => handleOpenMenu(event, 'menu1')}
-                    onClose={() => handleCloseMenu('menu1')}
-                  />
-                  <AppBarMenu
-                    menuName="Menu1"
-                    url="menu1"
-                    menuItems={roleHaveAccessMenu}
-                    anchorEl={anchorEls.menu1}
-                    onOpen={(
-                      event: React.MouseEvent<HTMLElement, MouseEvent>
-                    ) => handleOpenMenu(event, 'menu1')}
-                    onClose={() => handleCloseMenu('menu1')}
-                  />
-                  <AppBarMenu
-                    menuName="Menu1"
-                    url="menu1"
-                    menuItems={roleHaveAccessMenu}
-                    anchorEl={anchorEls.menu1}
-                    onOpen={(
-                      event: React.MouseEvent<HTMLElement, MouseEvent>
-                    ) => handleOpenMenu(event, 'menu1')}
-                    onClose={() => handleCloseMenu('menu1')}
-                  />
-                </Box>
-              )}
-            </Box>
-            <Box sx={homePageStyles(theme).userInfo}>
-              <Typography>{user?.username}</Typography>
-              <Box sx={homePageStyles(theme).switchTheme}>
-                <CSwitch onChange={handleSwitchChange} checked={checked} />
-                {theme.palette.mode === 'dark' ? (
-                  <NightlightIcon />
-                ) : (
-                  <WbSunnyIcon />
-                )}
-              </Box>
-              <IconButton
-                sx={homePageStyles(theme).buttonIcon}
-                onClick={() => {
-                  navigate('/login'), dispatch(resetLoginRequest());
-                }}
-              >
-                <LogoutIcon />
-              </IconButton>
-            </Box>
-          </Box>
-        </Toolbar>
-      </AppBar>
-
+    <>
+      <Box sx={homePageStyles(theme).header}>
+        <Typography variant="h2" color={'secondary'}>
+          {!isMobile ? 'Sylvie & Philippe 2024' : 'S&P'}
+        </Typography>
+        <IconButton
+          sx={homePageStyles(theme).logoutIcon}
+          onClick={() => navigate('/login')}
+        >
+          <LogoutIcon color="secondary" />
+        </IconButton>
+      </Box>
       <Container sx={homePageStyles(theme).mainWrapper} component="main">
         {children}
+        <Box sx={homePageStyles(theme).footer}>
+          <img src={logo} style={{ width: '3em' }} />
+          <img src={line} style={{ width: '18em' }} />
+          <Typography
+            color={'secondary'}
+            variant="body2"
+            sx={{ textAlign: 'center' }}
+          >
+            Made with 💛 by Paul Guillermier & Bertrand Duhamel
+          </Typography>
+        </Box>
       </Container>
-    </Box>
+    </>
   );
 };
 

@@ -1,85 +1,48 @@
 import { SxProps, Theme } from '@mui/material';
 
 interface HomePageStyles {
-  toolBar: SxProps;
-  container: SxProps;
-  pagesContainer: SxProps;
-  menuContainer: SxProps;
-  buttonIcon: SxProps;
-  drawer: SxProps;
-  userInfo: SxProps;
-  switchTheme: SxProps;
   mainWrapper: SxProps;
+  header: SxProps;
+  logoutIcon: SxProps;
+  footer: SxProps;
 }
 
 export const homePageStyles = (theme: Theme): HomePageStyles => ({
-  toolBar: {
-    display: 'flex',
-    gap: 1,
-    minHeight: theme.spacing(8),
-    paddingInline: theme.spacing(3),
-    backgroundColor: theme.palette.primary.main,
-  },
-
-  container: {
-    width: '100%',
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    '& div:only-child': {
-      marginLeft: 'auto',
-    },
-  },
-
-  pagesContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    gap: theme.spacing(1),
-  },
-
-  menuContainer: {
-    display: 'flex',
-    alignItems: 'center',
-    zIndex: 100,
-  },
-
-  buttonIcon: {
-    color: 'white',
-    padding: 1,
-    '&:hover': {
-      backgroundColor: theme.palette.primary.dark,
-    },
-  },
-
-  drawer: {
-    '& .MuiDrawer-paperAnchorLeft': {
-      minWidth: 400,
-    },
-  },
-
-  userInfo: {
-    display: 'flex',
-    flexDirection: 'row',
-    padding: theme.spacing(0.5, 1),
-    gap: theme.spacing(1),
-    alignItems: 'center',
-  },
-
-  switchTheme: {
-    display: 'flex',
-    alignItems: 'center',
-  },
-
   mainWrapper: {
     width: '100%',
     maxWidth: '100%!important',
     boxSizing: 'border-box',
     margin: 'auto',
-    paddingLeft: '4vw!important',
-    paddingRight: '4vw!important',
-    marginBlock: theme.spacing(7),
-    [theme.breakpoints.down('md')]: {
-      paddingInline: '3vw',
-    },
+    paddingInline: '0!important',
+  },
+
+  header: {
+    position: 'fixed',
+    width: '100%',
+    height: '64px',
+    backgroundColor: `${theme.palette.primary.main}40` /* Couleur de fond transparente */,
+    backdropFilter: 'blur(10px)' /* Flou du fond */,
+    display: 'flex',
+    alignContent: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 1000,
+  },
+
+  logoutIcon: {
+    position: 'fixed',
+    right: theme.spacing(3),
+  },
+
+  footer: {
+    width: '100%',
+    backgroundColor: theme.palette.primary.main,
+    display: 'flex',
+    alignContent: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'column',
+    padding: theme.spacing(4),
+    gap: theme.spacing(2),
   },
 });

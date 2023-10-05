@@ -2,63 +2,59 @@ import { SxProps } from '@mui/system';
 import { Theme } from '@mui/material';
 
 interface LandingPageStyles {
-  mainWrapper: SxProps;
-  cardContainer: SxProps;
-  title: SxProps;
-  username: SxProps;
-  infosContainer: SxProps;
-  infosTitle: SxProps;
-  infosText: SxProps;
-  infosImage: SxProps;
+  // eslint-disable-next-line no-unused-vars
+  background: (image: string) => SxProps;
+  firstWrapper: SxProps;
+  secondWrapper: SxProps;
+  gridWrapper: SxProps;
 }
 
+// eslint-disable-next-line no-unused-vars
 export const landingPageStyles = (theme: Theme): LandingPageStyles => ({
-  mainWrapper: {
+  background: (image) => ({
+    backgroundImage: `url(${image})`,
+    minHeight: '80vh',
+    backgroundAttachment: 'fixed',
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: 'cover',
+    [theme.breakpoints.down('md')]: {
+      backgroundAttachment: 'scroll',
+    },
+  }),
+
+  firstWrapper: {
+    height: '50vh',
+    paddingBlock: '128px',
+    backgroundColor: theme.palette.primary.main,
+    color: 'white',
+    paddingInline: theme.spacing(4),
     display: 'flex',
-    flexDirection: 'column',
-    gap: theme.spacing(3),
-  },
-
-  cardContainer: {
-    backgroundColor: theme.palette.background.paper,
-    borderRadius: theme.shape.borderRadius,
-    padding: theme.spacing(3),
-  },
-
-  title: {
-    fontWeight: 500,
-    textAlign: 'center',
-    marginBlock: theme.spacing(3),
-  },
-
-  username: {
-    fontWeight: 'bold',
-    fontSize: '1em',
-    color: theme.palette.primary.main,
-  },
-
-  infosContainer: {
-    display: 'flex',
-    gap: theme.spacing(3),
     alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-
-  infosTitle: {
-    fontWeight: 700,
-    marginBottom: theme.spacing(4),
-    color: theme.palette.primary.main,
-  },
-
-  infosText: {
-    '& p': {
-      textAlign: 'justify',
+    justifyContent: 'flex-start',
+    flexDirection: 'column',
+    textAlign: 'center',
+    gap: theme.spacing(8),
+    [theme.breakpoints.down('md')]: {
+      height: 'unset',
     },
   },
 
-  infosImage: {
-    '& > img': {
-      width: 200,
+  gridWrapper: {
+    display: 'grid',
+    gridTemplateColumns: '1fr 1fr 1fr',
+    width: '100%',
+    gap: theme.spacing(2),
+    [theme.breakpoints.down('md')]: {
+      gridTemplateColumns: '1fr',
     },
+  },
+
+  secondWrapper: {
+    height: '60vh',
+    paddingTop: '64px',
+    backgroundColor: theme.palette.primary.main,
+    color: 'white',
+    paddingInline: theme.spacing(4),
   },
 });

@@ -60,6 +60,7 @@ const CInfosCard: React.FC<CInfosCardProps> = ({
           ]}
         >
           {children}
+          {icon}
         </Box>
       )}
     </>

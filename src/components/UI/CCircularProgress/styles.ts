@@ -7,7 +7,7 @@ interface CCircularProgressStyles {
 }
 
 export const cCircularProgressStyles = (
-  theme: Theme
+  theme: Theme,
 ): CCircularProgressStyles => ({
   loaderContainer: (isModal) => ({
     flex: 'auto',

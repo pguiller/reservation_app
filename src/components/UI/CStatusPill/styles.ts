@@ -3,7 +3,13 @@ import { SxProps, Theme } from '@mui/material';
 interface CLongtextBoxStyles {
   pill: (
     // eslint-disable-next-line no-unused-vars
-    severity: 'primary' | 'secondary' | 'error' | 'info' | 'warning' | 'success'
+    severity:
+      | 'primary'
+      | 'secondary'
+      | 'error'
+      | 'info'
+      | 'warning'
+      | 'success',
   ) => SxProps;
 }
 

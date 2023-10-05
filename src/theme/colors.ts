@@ -24,12 +24,21 @@ export const neutral = {
   900: '#111927',
 };
 
-export const freeRed = withAlphas({
-  lightest: '#fad0cf',
-  light: '#ef5350',
-  main: '#CC0A10',
-  dark: '#8c0b0f',
-  darkest: '#630e11',
+export const primary = withAlphas({
+  lightest: '#0084B8',
+  light: '#00587A',
+  main: '#002a3a',
+  dark: '#001D29',
+  darkest: '#000F14',
+  contrastText: '#FFFFFF',
+});
+
+export const secondary = withAlphas({
+  lightest: '#F9E4B4',
+  light: '#F6D78E',
+  main: '#F3C969',
+  dark: '#F0BC42',
+  darkest: '#EDAE1D',
   contrastText: '#FFFFFF',
 });
 

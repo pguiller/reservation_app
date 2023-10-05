@@ -51,7 +51,7 @@ const AppBarMenu = <T extends Stage | string>({
       }
       onClose();
     },
-    [dispatch, onClose]
+    [dispatch, onClose],
   );
 
   return (
@@ -65,7 +65,7 @@ const AppBarMenu = <T extends Stage | string>({
           onClick={onOpen}
           sx={sx(
             appBarMenuStyles(theme).iconButton,
-            appBarMenuStyles(theme).navbarButton
+            appBarMenuStyles(theme).navbarButton,
           )}
         >
           <AccountCircle />

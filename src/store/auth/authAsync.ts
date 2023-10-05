@@ -8,7 +8,7 @@ export const loginlAsync = createAsyncThunk(
     const response = await login(body);
 
     return response;
-  }
+  },
 );
 export const logoutlAsync = createAsyncThunk('menu/logout', async () => {
   const response = await logout();
@@ -22,5 +22,5 @@ export const getUserInfosAsync = createAsyncThunk(
     const response = await getUserInfos();
 
     return response;
-  }
+  },
 );

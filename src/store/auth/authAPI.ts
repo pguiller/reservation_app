@@ -7,7 +7,7 @@ import { store } from '../store';
 export const login = async (body: AuthData): Promise<AuthToken> => {
   const response = await axios.post<AuthToken>(
     `${BACK_URL}/auth/api/token/`,
-    body
+    body,
   );
 
   return response.data;
@@ -26,7 +26,7 @@ export const getUserInfos = async (): Promise<UserInfos> => {
       headers: {
         Authorization: `Bearer ${token}`,
       },
-    }
+    },
   );
 
   return response.data;

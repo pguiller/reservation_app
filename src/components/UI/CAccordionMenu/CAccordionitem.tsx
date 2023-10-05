@@ -51,7 +51,7 @@ const CAccordion = <T extends Stage | string>({
       }
       dispatch(leftMenuOpened(false));
     },
-    [dispatch]
+    [dispatch],
   );
 
   return (

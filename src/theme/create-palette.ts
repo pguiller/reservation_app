@@ -5,11 +5,12 @@ import {
   neutral,
   success,
   warning,
-  freeRed,
+  primary,
   errorDark,
   warningDark,
   infoDark,
   successDark,
+  secondary,
 } from './colors';
 
 export function createPalette(mode: 'light' | 'dark') {
@@ -47,7 +48,8 @@ export function createPalette(mode: 'light' | 'dark') {
     info: mode === 'light' ? info : infoDark,
     mode: mode,
     neutral,
-    primary: freeRed,
+    primary: primary,
+    secondary: secondary,
     success: mode === 'light' ? success : successDark,
     text:
       mode === 'light'
