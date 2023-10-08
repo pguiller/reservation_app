@@ -21,15 +21,15 @@ export const cInfosCardStyles = (theme: Theme): CInfosCardStyles => ({
   button: (disabled) => ({
     display: 'flex',
     justifyContent: 'space-between',
-    color: 'white',
+    color: theme.palette.primary.main,
     backgroundColor: disabled
       ? theme.palette.action.disabled
-      : theme.palette.primary.main,
+      : theme.palette.secondary.main,
     transition: theme.transitions.create(['background-color'], {
       duration: theme.transitions.duration.standard,
     }),
     '&:hover': {
-      backgroundColor: theme.palette.primary.dark,
+      backgroundColor: theme.palette.secondary.dark,
       transition: theme.transitions.create(['background-color'], {
         duration: theme.transitions.duration.standard,
       }),

@@ -46,6 +46,11 @@ export const loginPageStyles = (theme: Theme): LoginPageStyles => ({
     '& button': {
       width: '100%',
     },
+    [theme.breakpoints.down('sm')]: {
+      '& h1': {
+        fontSize: '2rem',
+      },
+    },
   },
 
   title: {

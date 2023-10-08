@@ -60,7 +60,6 @@ export const landingPageStyles = (theme: Theme): LandingPageStyles => ({
   },
 
   secondWrapper: {
-    height: '60vh',
     paddingBlock: '64px',
     backgroundColor: theme.palette.primary.main,
     color: 'white',

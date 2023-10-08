@@ -7,6 +7,7 @@ import {
   IconButtonPropsColorOverrides,
   SxProps,
   Theme,
+  Tooltip,
   useTheme,
 } from '@mui/material';
 import DoneIcon from '@mui/icons-material/Done';
@@ -17,6 +18,7 @@ interface CLoadingIconButtonProps {
   isLoading: boolean;
   isSuccess?: boolean;
   icon: React.ReactNode;
+  tooltip?: string;
   color?:
     | OverridableStringUnion<
         | 'error'
@@ -38,6 +40,7 @@ const CLoadingIconButton: React.FC<CLoadingIconButtonProps> = ({
   isLoading,
   isSuccess = false,
   icon,
+  tooltip,
   color = 'primary',
   sx,
 }) => {
@@ -53,9 +56,11 @@ const CLoadingIconButton: React.FC<CLoadingIconButtonProps> = ({
       ) : isSuccess ? (
         <DoneIcon color="primary" />
       ) : (
-        <IconButton onClick={onClick} color={color}>
-          {icon}
-        </IconButton>
+        <Tooltip title={tooltip}>
+          <IconButton onClick={onClick} color={color}>
+            {icon}
+          </IconButton>
+        </Tooltip>
       )}
     </Box>
   );

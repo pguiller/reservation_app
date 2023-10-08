@@ -25,7 +25,8 @@ const LoginPage = () => {
   const [password, setPassword] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
-  const [showPassword, setShowPassword] = useState(true);
+  const [code, setCode] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [isRegistering, setIsRegistering] = useState(false);
 
   return (
@@ -79,13 +80,19 @@ const LoginPage = () => {
                   setValue={setFirstName}
                   value={firstName}
                   sx={{ width: '100%' }}
-                ></CTextField>
+                />
                 <CTextField
                   label={'Nom'}
                   setValue={setLastName}
                   value={lastName}
                   sx={{ width: '100%' }}
-                ></CTextField>
+                />
+                <CTextField
+                  label={'Code invité'}
+                  setValue={setCode}
+                  value={code}
+                  sx={{ width: '100%' }}
+                />
               </>
             )}
             <CLoadingButton
