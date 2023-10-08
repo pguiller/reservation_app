@@ -7,13 +7,18 @@ import { landingPageStyles } from './styles';
 import CInfosCard from 'src/components/UI/CInfosCard/CInfosCard';
 import EventIcon from '@mui/icons-material/Event';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { ADRESS_EVENT } from 'src/config';
 import { useState } from 'react';
+import CTextField from 'src/components/UI/CTextField/CTextField';
+import CLoadingIconButton from 'src/components/UI/CLoadingIconButton/CLoadingIconButton';
 
 const LandingPage = () => {
   const theme = useTheme();
 
   const [copySnackbarOpen, setCopySnackbarOpen] = useState<boolean>(false);
+  const [firstname, setFirstname] = useState<string>('');
+  const [lastname, setLastname] = useState<string>('');
 
   return (
     <>
@@ -44,8 +49,40 @@ const LandingPage = () => {
       </Box>
       <Box sx={landingPageStyles(theme).background(imageHome1)} />
       <Box sx={landingPageStyles(theme).secondWrapper}>
+        <CInfosCard>
+          <Box sx={landingPageStyles(theme).addPersonWrapper}>
+            <Typography>
+              Vous venez à plusieurs ? Ajouter des personnes ici
+            </Typography>
+            <Box sx={landingPageStyles(theme).textFieldNameButtonWrapper}>
+              <Box sx={landingPageStyles(theme).textFieldNameWrapper}>
+                <CTextField
+                  value={firstname}
+                  setValue={setFirstname}
+                  label={'Prénom'}
+                  color={'secondary'}
+                  sx={landingPageStyles(theme).textFieldName}
+                  focused
+                />
+                <CTextField
+                  value={lastname}
+                  setValue={setLastname}
+                  label={'Nom'}
+                  color={'secondary'}
+                  sx={landingPageStyles(theme).textFieldName}
+                  focused
+                />
+              </Box>
+              <CLoadingIconButton
+                onClick={undefined}
+                isLoading={false}
+                icon={<AddCircleIcon />}
+                color={'secondary'}
+              />
+            </Box>
+          </Box>
+        </CInfosCard>
         <CInfosCard>Infos supp</CInfosCard>
-        <CInfosCard>Ajouter des participants</CInfosCard>
         <CInfosCard>
           Liste des participants ajoutés + valider leur venue
         </CInfosCard>

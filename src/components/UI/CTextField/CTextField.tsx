@@ -19,6 +19,7 @@ interface CTextFieldProps {
   onChange?: () => void;
   endAdornment?: ReactNode;
   accept?: string;
+  focused?: boolean;
   placeholder?: string;
   color?:
     | 'error'
@@ -47,6 +48,7 @@ const CTextField: React.FC<CTextFieldProps> = ({
   onChange,
   endAdornment,
   accept,
+  focused = false,
   placeholder,
   color = 'primary',
   sx,
@@ -56,6 +58,7 @@ const CTextField: React.FC<CTextFieldProps> = ({
   return (
     <TextField
       id={id}
+      focused={focused}
       sx={[cTextFieldStyles(theme).wrapper, ...(Array.isArray(sx) ? sx : [sx])]}
       label={label}
       type={type}

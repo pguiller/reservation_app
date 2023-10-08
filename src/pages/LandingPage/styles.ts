@@ -7,6 +7,10 @@ interface LandingPageStyles {
   firstWrapper: SxProps;
   secondWrapper: SxProps;
   gridWrapper: SxProps;
+  addPersonWrapper: SxProps;
+  textFieldNameWrapper: SxProps;
+  textFieldNameButtonWrapper: SxProps;
+  textFieldName: SxProps;
 }
 
 // eslint-disable-next-line no-unused-vars
@@ -20,12 +24,17 @@ export const landingPageStyles = (theme: Theme): LandingPageStyles => ({
     backgroundSize: 'cover',
     [theme.breakpoints.down('md')]: {
       backgroundAttachment: 'scroll',
+      minHeight: '40vh',
+    },
+    [theme.breakpoints.down('sm')]: {
+      backgroundAttachment: 'scroll',
+      minHeight: '30vh',
     },
   }),
 
   firstWrapper: {
     height: '50vh',
-    paddingBlock: '128px',
+    paddingBlock: theme.spacing(8),
     backgroundColor: theme.palette.primary.main,
     color: 'white',
     paddingInline: theme.spacing(4),
@@ -52,9 +61,42 @@ export const landingPageStyles = (theme: Theme): LandingPageStyles => ({
 
   secondWrapper: {
     height: '60vh',
-    paddingTop: '64px',
+    paddingBlock: '64px',
     backgroundColor: theme.palette.primary.main,
     color: 'white',
     paddingInline: theme.spacing(4),
+    display: 'flex',
+    flexDirection: 'column',
+    gap: theme.spacing(2),
+  },
+
+  addPersonWrapper: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: theme.spacing(2),
+    width: '100%',
+  },
+
+  textFieldNameButtonWrapper: {
+    display: 'flex',
+    gap: theme.spacing(2),
+    alignItems: 'center',
+    width: '100%',
+  },
+
+  textFieldNameWrapper: {
+    display: 'flex',
+    gap: theme.spacing(2),
+    width: '100%',
+    [theme.breakpoints.down('md')]: {
+      flexDirection: 'column',
+    },
+  },
+
+  textFieldName: {
+    width: '100%',
+    '& input': {
+      color: theme.palette.secondary.main,
+    },
   },
 });

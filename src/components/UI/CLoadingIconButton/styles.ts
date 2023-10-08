@@ -5,7 +5,7 @@ interface CLoadingIconButtonStyles {
 }
 
 export const cLoadingIconButtonStyles = (
-  theme: Theme
+  theme: Theme,
 ): CLoadingIconButtonStyles => ({
   loader: {
     color: theme.palette.primary.main,
