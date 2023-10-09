@@ -62,5 +62,6 @@ export const loginPageStyles = (theme: Theme): LoginPageStyles => ({
     padding: '20px',
     width: '100vw',
     borderRadius: '10px',
+    color: theme.palette.primary.main,
   },
 });

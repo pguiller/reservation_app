@@ -33,7 +33,6 @@ export const landingPageStyles = (theme: Theme): LandingPageStyles => ({
   }),
 
   firstWrapper: {
-    height: '50vh',
     paddingBlock: theme.spacing(8),
     backgroundColor: theme.palette.primary.main,
     color: 'white',
