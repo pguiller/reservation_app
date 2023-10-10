@@ -36,6 +36,7 @@ import CLoadingButton from 'src/components/UI/CLoadingButton/CLoadingButton';
 import { AddressCardInfos } from 'src/utils/types/AddressCardInfos';
 import { HOTELS_INFORMATIONS } from 'src/utils/hotelsInformations';
 import CImageInfosCard from 'src/components/UI/CImageInfosCard/CImageInfosCard';
+import { ACTIVITIES_INFORMATIONS } from 'src/utils/activitiesInformations';
 
 const fakeData: MorePeopleData[] = [
   {
@@ -203,6 +204,11 @@ const LandingPage = () => {
       {/* ------------------------------------Quatrième wrapper------------------------------------ */}
       <Box sx={landingPageStyles(theme).secondWrapper} ref={activityRef}>
         <Typography>{'Les recommandations de Sylvie'}</Typography>
+        <Box sx={landingPageStyles(theme).hotelsWrapper}>
+          {ACTIVITIES_INFORMATIONS.map((activity: AddressCardInfos) => (
+            <CImageInfosCard key={activity.id} infos={activity} />
+          ))}
+        </Box>
       </Box>
       <Box sx={landingPageStyles(theme).background(imageHome4)} />
       <Snackbar
