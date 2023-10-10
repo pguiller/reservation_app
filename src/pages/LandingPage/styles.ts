@@ -11,6 +11,7 @@ interface LandingPageStyles {
   textFieldNameWrapper: SxProps;
   textFieldNameButtonWrapper: SxProps;
   textFieldName: SxProps;
+  hotelsWrapper: SxProps;
 }
 
 // eslint-disable-next-line no-unused-vars
@@ -95,6 +96,15 @@ export const landingPageStyles = (theme: Theme): LandingPageStyles => ({
     width: '100%',
     '& input': {
       color: theme.palette.secondary.main,
+    },
+  },
+
+  hotelsWrapper: {
+    display: 'grid',
+    gridTemplateColumns: '1fr 1fr',
+    gap: theme.spacing(3),
+    [theme.breakpoints.down('md')]: {
+      gridTemplateColumns: '1fr',
     },
   },
 });

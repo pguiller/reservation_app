@@ -31,6 +31,7 @@ const CLoadingButton: React.FC<CLoadingButtonProps> = ({
       variant={variant}
       onClick={() => onClick()}
       loading={loading}
+      color={color}
     >
       {children}
     </LoadingButton>

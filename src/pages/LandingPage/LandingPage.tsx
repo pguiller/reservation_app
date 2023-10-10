@@ -1,6 +1,11 @@
 import {
   Box,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
   IconButton,
+  Radio,
+  RadioGroup,
   Snackbar,
   Tooltip,
   Typography,
@@ -27,6 +32,10 @@ import CLoadingIconButton from 'src/components/UI/CLoadingIconButton/CLoadingIco
 import TableMorePeople from './TableMorePeople/TableMorePeople';
 import { MorePeopleData } from 'src/utils/types/MorePeopleData';
 import { scrollTo } from 'src/utils/functions';
+import CLoadingButton from 'src/components/UI/CLoadingButton/CLoadingButton';
+import { AddressCardInfos } from 'src/utils/types/AddressCardInfos';
+import { HOTELS_INFORMATIONS } from 'src/utils/hotelsInformations';
+import CImageInfosCard from 'src/components/UI/CImageInfosCard/CImageInfosCard';
 
 const fakeData: MorePeopleData[] = [
   {
@@ -55,6 +64,7 @@ const LandingPage = () => {
   const [copySnackbarOpen, setCopySnackbarOpen] = useState<boolean>(false);
   const [firstname, setFirstname] = useState<string>('');
   const [lastname, setLastname] = useState<string>('');
+  const [availability, setAvailability] = useState<string>('');
 
   return (
     <>
@@ -82,7 +92,40 @@ const LandingPage = () => {
           <CInfosCard icon={<EventIcon color={'secondary'} />}>
             25 mai 2024
           </CInfosCard>
-          <CInfosCard>Valider sa venue</CInfosCard>
+          <CInfosCard>
+            <FormControl>
+              <FormLabel id="demo-controlled-radio-buttons-group">
+                Valider sa venue
+              </FormLabel>
+              <RadioGroup
+                aria-labelledby="availability-radio-buttons-group"
+                name="availability-radio-buttons-group"
+                value={availability}
+                onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                  setAvailability(event.target.value)
+                }
+              >
+                <FormControlLabel
+                  value="available"
+                  control={<Radio color="secondary" />}
+                  label="Disponible"
+                />
+                <FormControlLabel
+                  value="unavailable"
+                  control={<Radio color="secondary" />}
+                  label="Indisponible"
+                />
+              </RadioGroup>
+            </FormControl>
+            <CLoadingButton
+              variant="contained"
+              color="secondary"
+              loading={false}
+              onClick={() => console.log('coucou')}
+            >
+              Valider
+            </CLoadingButton>
+          </CInfosCard>
           <CInfosCard
             isButton
             icon={<PersonAddIcon />}
@@ -134,7 +177,7 @@ const LandingPage = () => {
                 />
               </Box>
               <CLoadingIconButton
-                onClick={undefined}
+                onClick={() => console.log('coucou')}
                 isLoading={false}
                 icon={<AddCircleIcon />}
                 color={'secondary'}
@@ -150,6 +193,11 @@ const LandingPage = () => {
       {/* ------------------------------------Troisimème wrapper------------------------------------ */}
       <Box sx={landingPageStyles(theme).secondWrapper} ref={hotelRef}>
         <Typography>{"À la recherche d'un hôtel ?"}</Typography>
+        <Box sx={landingPageStyles(theme).hotelsWrapper}>
+          {HOTELS_INFORMATIONS.map((hotel: AddressCardInfos) => (
+            <CImageInfosCard key={hotel.id} infos={hotel} />
+          ))}
+        </Box>
       </Box>
       <Box sx={landingPageStyles(theme).background(imageHome3)} />
       {/* ------------------------------------Quatrième wrapper------------------------------------ */}
