@@ -1,10 +1,11 @@
 export interface AuthData {
-  username: string;
-  password: string;
+  lastname: string;
+  mdpentered: string;
 }
 
-export interface AuthToken {
-  refresh: string;
+export interface AuthResponse {
+  authenticated: boolean;
+  UserId: number;
   access: string;
 }
 

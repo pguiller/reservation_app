@@ -14,7 +14,6 @@ interface LandingPageStyles {
   hotelsWrapper: SxProps;
 }
 
-// eslint-disable-next-line no-unused-vars
 export const landingPageStyles = (theme: Theme): LandingPageStyles => ({
   background: (image) => ({
     backgroundImage: `url(${image})`,

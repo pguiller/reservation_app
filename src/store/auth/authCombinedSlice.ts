@@ -1,12 +1,12 @@
 import { combineReducers } from '@reduxjs/toolkit';
 import loginSlice from './authSlices/loginSlice';
-import logoutSlice from './authSlices/logoutSlice';
-import userInfosSlice from './authSlices/userInfosSlice';
+import registerSlice from './authSlices/registerSlice';
+import resetPasswordSlice from './authSlices/resetPasswordSlice';
 
 const authReducer = combineReducers({
   login: loginSlice,
-  logout: logoutSlice,
-  userInfos: userInfosSlice,
+  register: registerSlice,
+  resetPassword: resetPasswordSlice,
 });
 
 export default authReducer;

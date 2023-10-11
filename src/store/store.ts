@@ -5,20 +5,22 @@ import {
   combineReducers,
 } from '@reduxjs/toolkit';
 import authReducer from './auth/authCombinedSlice';
-import NavReducer from './navigation/navigationSlice';
+import navReducer from './navigation/navigationSlice';
 import { useDispatch } from 'react-redux';
 import storage from 'redux-persist/lib/storage';
 import { persistReducer, persistStore } from 'redux-persist';
+import userReducer from './user/userCombinedSlice';
 
 const persistConfig = {
   key: 'root',
   storage,
-  blacklist: [],
+  blacklist: ['user'],
 };
 
 const rootReducer = combineReducers({
   auth: authReducer,
-  nav: NavReducer,
+  nav: navReducer,
+  user: userReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

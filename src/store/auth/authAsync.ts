@@ -1,6 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AuthData } from 'src/utils/types/AuthData';
-import { getUserInfos, login, logout } from './authAPI';
+import { login, register, resetPassword } from './authAPI';
+import { RegisterInfos } from 'src/utils/types/RegisterInfos';
 
 export const loginlAsync = createAsyncThunk(
   'menu/login',
@@ -10,16 +11,20 @@ export const loginlAsync = createAsyncThunk(
     return response;
   },
 );
-export const logoutlAsync = createAsyncThunk('menu/logout', async () => {
-  const response = await logout();
 
-  return response;
-});
+export const registerAsync = createAsyncThunk(
+  'menu/register',
+  async (body: RegisterInfos) => {
+    const response = await register(body);
 
-export const getUserInfosAsync = createAsyncThunk(
-  'auth/current-user',
-  async () => {
-    const response = await getUserInfos();
+    return response;
+  },
+);
+
+export const resetPasswordAsync = createAsyncThunk(
+  'menu/resetPassword',
+  async (body: RegisterInfos) => {
+    const response = await resetPassword(body);
 
     return response;
   },

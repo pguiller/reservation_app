@@ -1,11 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { ReduxStatus } from 'src/utils/types/reduxStatusValues';
-import { decodeToken } from 'src/utils/functions';
 import { loginlAsync } from '../authAsync';
 import { AuthState } from '../types';
 
 const initialState: AuthState = {
-  user: null,
   status: ReduxStatus.Idle,
   error: null,
   alert: {
@@ -20,6 +18,9 @@ const loginSlice = createSlice({
   initialState,
   reducers: {
     resetLoginRequest: () => initialState,
+    resetLoginRequestStatus: (state) => {
+      state.status = ReduxStatus.Idle;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -28,9 +29,8 @@ const loginSlice = createSlice({
       })
       .addCase(loginlAsync.fulfilled, (state, action) => {
         state.status = ReduxStatus.Succeeded;
-        state.alert.successMessage = 'login successful';
-        state.user = decodeToken(action.payload.access);
-        state.token = action.payload.access;
+        state.alert.successMessage = 'Login successful';
+        state.token = action.payload;
       })
       .addCase(loginlAsync.rejected, (state, action) => {
         state.status = ReduxStatus.Failed;
@@ -40,6 +40,7 @@ const loginSlice = createSlice({
   },
 });
 
-export const { resetLoginRequest } = loginSlice.actions;
+export const { resetLoginRequest, resetLoginRequestStatus } =
+  loginSlice.actions;
 
 export default loginSlice.reducer;

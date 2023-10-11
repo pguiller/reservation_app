@@ -1,33 +1,25 @@
-import axios, { AxiosResponse } from 'axios';
+import axios from 'axios';
 import { BACK_URL } from 'src/config';
-import { AuthData, AuthToken } from 'src/utils/types/AuthData';
-import { UserInfos } from 'src/utils/types/UserInfos';
-import { store } from '../store';
+import { AuthData } from 'src/utils/types/AuthData';
+import { RegisterInfos } from 'src/utils/types/RegisterInfos';
 
-export const login = async (body: AuthData): Promise<AuthToken> => {
-  const response = await axios.post<AuthToken>(
-    `${BACK_URL}/auth/api/token/`,
+export const login = async (body: AuthData): Promise<string> => {
+  const response = await axios.post<string>(
+    `${BACK_URL}/authenticate-user`,
     body,
   );
 
-  return response.data;
-};
-export const logout = async (): Promise<AxiosResponse> => {
-  const response = await axios.post<AxiosResponse>(`${BACK_URL}/logout/`);
-
-  return response.data;
+  return response.headers['Authorization'].split(' ')[1];
 };
 
-export const getUserInfos = async (): Promise<UserInfos> => {
-  const { token } = store.getState().auth.login;
-  const response = await axios.get<UserInfos>(
-    `${BACK_URL}/auth/current-user/`,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    },
-  );
+export const register = async (body: RegisterInfos) => {
+  const response = await axios.post(`${BACK_URL}/register-user`, body);
 
-  return response.data;
+  return response;
+};
+
+export const resetPassword = async (body: RegisterInfos) => {
+  const response = await axios.post(`${BACK_URL}/change-password`, body);
+
+  return response;
 };

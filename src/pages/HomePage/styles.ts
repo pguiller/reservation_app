@@ -3,7 +3,7 @@ import { SxProps, Theme } from '@mui/material';
 interface HomePageStyles {
   mainWrapper: SxProps;
   header: SxProps;
-  logoutIcon: SxProps;
+  iconsWrapper: SxProps;
   footer: SxProps;
 }
 
@@ -29,9 +29,11 @@ export const homePageStyles = (theme: Theme): HomePageStyles => ({
     zIndex: 1000,
   },
 
-  logoutIcon: {
+  iconsWrapper: {
     position: 'fixed',
     right: theme.spacing(3),
+    display: 'flex',
+    gap: theme.spacing(1),
   },
 
   footer: {

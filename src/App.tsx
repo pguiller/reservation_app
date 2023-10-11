@@ -6,6 +6,8 @@ import HomePage from './pages/HomePage/HomePage';
 import LandingPage from './pages/LandingPage/LandingPage';
 import LoginPage from './pages/LoginPage/LoginPage';
 import ErrorPage from './pages/ErrorPage/ErrorPage';
+import AdminPage from './pages/AdminPage/AdminPage';
+import PicturesPage from './pages/PicturesPage/PicturesPage';
 
 function App() {
   return (
@@ -24,6 +26,22 @@ function App() {
                       element={
                         <ProtectedRoute redirectPath="/">
                           <LandingPage />
+                        </ProtectedRoute>
+                      }
+                    />
+                    <Route
+                      path="/admin"
+                      element={
+                        <ProtectedRoute redirectPath="/">
+                          <AdminPage />
+                        </ProtectedRoute>
+                      }
+                    />
+                    <Route
+                      path="/photos"
+                      element={
+                        <ProtectedRoute redirectPath="/">
+                          <PicturesPage />
                         </ProtectedRoute>
                       }
                     />

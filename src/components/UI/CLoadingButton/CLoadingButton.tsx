@@ -15,7 +15,7 @@ interface CLoadingButtonProps {
 const CLoadingButton: React.FC<CLoadingButtonProps> = ({
   children,
   variant,
-  color,
+  color = 'primary',
   loading,
   onClick,
   sx,

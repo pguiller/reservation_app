@@ -20,7 +20,6 @@ export const cButtonStyles = (theme: Theme): CButtonStyles => ({
       color ? theme.palette[color].main : theme.palette.primary.main
     }`,
     borderRadius: '24px',
-    color:
-      color === 'primary' || undefined ? 'white' : theme.palette.primary.main,
+    color: color === 'primary' ? 'white' : theme.palette.primary.main,
   }),
 });
