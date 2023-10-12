@@ -6,4 +6,5 @@ export interface AuthState {
   error: Error;
   status: ReduxStatus;
   token: string | null;
+  userId: number;
 }

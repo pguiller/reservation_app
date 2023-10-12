@@ -2,14 +2,17 @@ import axios from 'axios';
 import { BACK_URL } from 'src/config';
 import { AuthData } from 'src/utils/types/AuthData';
 import { RegisterInfos } from 'src/utils/types/RegisterInfos';
+import { UserInfos } from 'src/utils/types/UserInfos';
 
-export const login = async (body: AuthData): Promise<string> => {
-  const response = await axios.post<string>(
+export const login = async (body: AuthData) => {
+  const response = await axios.post<UserInfos>(
     `${BACK_URL}/authenticate-user`,
     body,
   );
 
-  return response.headers['Authorization'].split(' ')[1];
+  console.log(response.data);
+
+  return response.data;
 };
 
 export const register = async (body: RegisterInfos) => {

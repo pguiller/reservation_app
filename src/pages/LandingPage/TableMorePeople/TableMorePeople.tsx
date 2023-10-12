@@ -9,11 +9,17 @@ import {
   Box,
   Tooltip,
 } from '@mui/material';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { tableMorePeopleStyles } from './styles';
 import { MorePeopleData } from 'src/utils/types/MorePeopleData';
 import CLoadingIconButton from 'src/components/UI/CLoadingIconButton/CLoadingIconButton';
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from 'src/store/store';
+import { deleteMemberAsync } from 'src/store/user/userAsync';
+import { useAppSelector } from 'src/hooks';
+import { ReduxStatus } from 'src/utils/types/reduxStatusValues';
+import { removeMembersToUser } from 'src/store/user/userSlices/getUserByIdSlice';
 
 type TableMorePeopleProps = {
   data: MorePeopleData[];
@@ -21,6 +27,24 @@ type TableMorePeopleProps = {
 
 const TableMorePeople = ({ data }: TableMorePeopleProps) => {
   const theme = useTheme();
+  const dispatch = useDispatch<AppDispatch>();
+
+  const idUser = useAppSelector((state) => state.auth.login.userId);
+  const deleteMemberRequest = useAppSelector(
+    (state) => state.user.deleteMember,
+  );
+
+  const [idClicked, setIdClicked] = useState<number>(0);
+
+  useEffect(() => {
+    console.log('idclicked', idClicked);
+  }, [idClicked]);
+
+  useEffect(() => {
+    if (deleteMemberRequest.status === ReduxStatus.Succeeded) {
+      dispatch(removeMembersToUser({ id: idClicked }));
+    }
+  }, [deleteMemberRequest]);
 
   return (
     <TableContainer sx={tableMorePeopleStyles(theme).tableContainer}>
@@ -51,8 +75,16 @@ const TableMorePeople = ({ data }: TableMorePeopleProps) => {
               </TableCell>
               <TableCell sx={tableMorePeopleStyles(theme).tableCell}>
                 <CLoadingIconButton
-                  onClick={() => console.log('coucou')}
-                  isLoading={false}
+                  onClick={() => {
+                    setIdClicked(row.id);
+                    dispatch(
+                      deleteMemberAsync({
+                        id: idUser,
+                        body: { memberIds: [row.id] },
+                      }),
+                    );
+                  }}
+                  isLoading={deleteMemberRequest.status === ReduxStatus.Loading}
                   icon={<PersonRemoveIcon color="secondary" />}
                   tooltip={'Supprimer'}
                 />

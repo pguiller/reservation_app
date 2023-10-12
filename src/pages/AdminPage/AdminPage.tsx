@@ -1,5 +1,5 @@
 import { Box, Typography, useTheme } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { adminPageStyles } from './styles';
 import CInfosCard from 'src/components/UI/CInfosCard/CInfosCard';
 import CTextField from 'src/components/UI/CTextField/CTextField';
@@ -10,74 +10,91 @@ import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import DataTable from 'src/components/UI/Datatable/DataTable';
 import { GridColDef, GridCellParams } from '@mui/x-data-grid';
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
+import { AppDispatch } from 'src/store/store';
+import { useDispatch } from 'react-redux';
+import { getUsersAsync } from 'src/store/user/userAsync';
 
 const fakeRowsUsers = [
   {
+    id: 1,
     firstname: 'Paul',
     lastname: 'Guillermier',
     availability: 'Disponible',
   },
   {
+    id: 2,
     firstname: 'Bertrand',
     lastname: 'Duhamel',
     availability: 'Indisponible',
   },
   {
+    id: 3,
     firstname: 'Marie-Alix',
     lastname: 'Duhamel',
     availability: 'Non répondu',
   },
   {
+    id: 4,
     firstname: 'Paul',
     lastname: 'Guillermier',
     availability: 'Indisponible',
   },
   {
+    id: 5,
     firstname: 'Paul',
     lastname: 'Guillermier',
     availability: 'Non répondu',
   },
   {
+    id: 6,
     firstname: 'Paul',
     lastname: 'Guillermier',
     availability: 'Non répondu',
   },
   {
+    id: 7,
     firstname: 'Paul',
     lastname: 'Guillermier',
     availability: 'Non répondu',
   },
   {
+    id: 8,
     firstname: 'Paul',
     lastname: 'Guillermier',
     availability: 'Non répondu',
   },
   {
+    id: 9,
     firstname: 'Paul',
     lastname: 'Guillermier',
     availability: 'Non répondu',
   },
   {
+    id: 10,
     firstname: 'Bertrand',
     lastname: 'Duhamel',
     availability: 'Indisponible',
   },
   {
+    id: 11,
     firstname: 'Bertrand',
     lastname: 'Duhamel',
     availability: 'Indisponible',
   },
   {
+    id: 12,
     firstname: 'Bertrand',
     lastname: 'Duhamel',
     availability: 'Indisponible',
   },
   {
+    id: 13,
     firstname: 'Bertrand',
     lastname: 'Duhamel',
     availability: 'Indisponible',
   },
   {
+    id: 14,
     firstname: 'Bertrand',
     lastname: 'Duhamel',
     availability: 'Indisponible',
@@ -158,14 +175,19 @@ const availabiltySlectOptions: menuItem[] = [
 
 const AdminPage = () => {
   const theme = useTheme();
+  const dispatch = useDispatch<AppDispatch>();
 
   const [firstname, setFirstname] = useState<string>('');
   const [lastname, setLastname] = useState<string>('');
   const [availability, setAvailability] = useState<string>('Non répondu');
 
+  useEffect(() => {
+    dispatch(getUsersAsync());
+  }, []);
+
   return (
     <Box sx={adminPageStyles(theme).mainWrapper}>
-      <Typography variant="h1" color={'secondary'}>
+      <Typography variant="h2" color={'secondary'} sx={{ fontSize: '3rem' }}>
         Administration
       </Typography>
       <Box sx={adminPageStyles(theme).statsWrapper}>
@@ -185,17 +207,28 @@ const AdminPage = () => {
       <CInfosCard sx={adminPageStyles(theme).addUserCard}>
         <Box sx={adminPageStyles(theme).addUserWrapper}>
           <CTextField
+            sx={adminPageStyles(theme).textFieldName}
             value={firstname}
             setValue={setFirstname}
             label="Prénom"
+            color="secondary"
+            focused
           />
-          <CTextField value={lastname} setValue={setLastname} label="Nom" />
+          <CTextField
+            sx={adminPageStyles(theme).textFieldName}
+            value={lastname}
+            setValue={setLastname}
+            label="Nom"
+            color="secondary"
+            focused
+          />
           <CSelect
             menuItems={availabiltySlectOptions}
             label="Disponibilité"
             value={availability}
             setValue={setAvailability}
             labelId={'availability'}
+            color="secondary"
           />
         </Box>
         <CLoadingIconButton

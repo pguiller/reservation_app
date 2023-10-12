@@ -6,14 +6,16 @@ interface AdminPageStyles {
   statsWrapper: SxProps;
   addUserCard: SxProps;
   addUserWrapper: SxProps;
+  textFieldName: SxProps;
 }
 
 export const adminPageStyles = (theme: Theme): AdminPageStyles => ({
   mainWrapper: {
-    padding: theme.spacing(4, 2),
+    padding: theme.spacing(8, 2),
     display: 'flex',
     flexDirection: 'column',
     gap: theme.spacing(3),
+    backgroundColor: theme.palette.primary.main,
   },
 
   statsWrapper: {
@@ -32,9 +34,17 @@ export const adminPageStyles = (theme: Theme): AdminPageStyles => ({
 
   addUserWrapper: {
     display: 'flex',
+    width: '100%',
     gap: theme.spacing(2),
     [theme.breakpoints.down('sm')]: {
       flexDirection: 'column',
+    },
+  },
+
+  textFieldName: {
+    width: '100%',
+    '& input': {
+      color: theme.palette.secondary.main,
     },
   },
 });

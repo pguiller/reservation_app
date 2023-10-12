@@ -29,6 +29,14 @@ type CSelectProps = {
   onChange?: () => void;
   setValue: any;
   labelId: string;
+  color?:
+    | 'error'
+    | 'primary'
+    | 'secondary'
+    | 'info'
+    | 'success'
+    | 'warning'
+    | undefined;
   size?:
     | OverridableStringUnion<'small' | 'medium', FormControlPropsSizeOverrides>
     | undefined;
@@ -46,6 +54,7 @@ const CSelect = ({
   sx,
   labelId,
   size,
+  color,
   fetchStatus,
   errorMessage = 'Une erreur est survenue veuillez réessayer.',
 }: CSelectProps) => {
@@ -56,11 +65,12 @@ const CSelect = ({
       sx={[cSelectStyles(theme).wrapper, ...(Array.isArray(sx) ? sx : [sx])]}
     >
       <FormControl sx={cSelectStyles(theme).select} size={size}>
-        <InputLabel id={labelId} />
+        <InputLabel id={labelId} color={color} />
         <Select
           label={label}
           value={value}
           defaultValue={defaultValue}
+          color={color}
           onChange={(e: SelectChangeEvent) => {
             setValue(e.target.value);
             onChange && onChange();

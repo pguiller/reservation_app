@@ -2,7 +2,6 @@ import {
   Box,
   FormControl,
   FormControlLabel,
-  FormLabel,
   IconButton,
   Radio,
   RadioGroup,
@@ -26,7 +25,7 @@ import LocalHotelIcon from '@mui/icons-material/LocalHotel';
 import GolfCourseIcon from '@mui/icons-material/GolfCourse';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import { ADRESS_EVENT } from 'src/config';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import CTextField from 'src/components/UI/CTextField/CTextField';
 import CLoadingIconButton from 'src/components/UI/CLoadingIconButton/CLoadingIconButton';
 import TableMorePeople from './TableMorePeople/TableMorePeople';
@@ -37,35 +36,67 @@ import { AddressCardInfos } from 'src/utils/types/AddressCardInfos';
 import { HOTELS_INFORMATIONS } from 'src/utils/hotelsInformations';
 import CImageInfosCard from 'src/components/UI/CImageInfosCard/CImageInfosCard';
 import { ACTIVITIES_INFORMATIONS } from 'src/utils/activitiesInformations';
-
-const fakeData: MorePeopleData[] = [
-  {
-    id: 0,
-    firstname: 'Marie-Alix',
-    lastname: 'Duhamel',
-  },
-  {
-    id: 1,
-    firstname: 'Bertrand',
-    lastname: 'Duhamel',
-  },
-  {
-    id: 2,
-    firstname: 'Marion',
-    lastname: 'Duhamel',
-  },
-];
+import { AppDispatch } from 'src/store/store';
+import { useDispatch } from 'react-redux';
+import {
+  addMemberAsync,
+  getUserByIdsAsync,
+  updateConfirmationAsync,
+} from 'src/store/user/userAsync';
+import { useAppSelector } from 'src/hooks';
+import { ReduxStatus } from 'src/utils/types/reduxStatusValues';
+import { addMembersToUser } from 'src/store/user/userSlices/getUserByIdSlice';
+import { resetAddMemberRequest } from 'src/store/user/userSlices/addMemberSlice';
+import { Member } from 'src/utils/types/Member';
 
 const LandingPage = () => {
   const theme = useTheme();
+  const dispatch = useDispatch<AppDispatch>();
   const addPersonRef = useRef(null);
   const hotelRef = useRef(null);
   const activityRef = useRef(null);
+
+  const idUser = useAppSelector((state) => state.auth.login.userId);
+  const getUserByIdRequest = useAppSelector((state) => state.user.getUserById);
+  const addMemberRequest = useAppSelector((state) => state.user.addMember);
 
   const [copySnackbarOpen, setCopySnackbarOpen] = useState<boolean>(false);
   const [firstname, setFirstname] = useState<string>('');
   const [lastname, setLastname] = useState<string>('');
   const [availability, setAvailability] = useState<string>('');
+  const membersArray: MorePeopleData[] = getUserByIdRequest.data.members.map(
+    (member: Member) => ({
+      id: member.Id,
+      firstname: member.firstname,
+      lastname: member.lastname,
+    }),
+  );
+
+  useEffect(() => {
+    dispatch(getUserByIdsAsync(idUser));
+  }, []);
+
+  useEffect(() => {
+    console.log(getUserByIdRequest);
+  }, [getUserByIdRequest]);
+
+  useEffect(() => {
+    if (addMemberRequest.status === ReduxStatus.Succeeded) {
+      dispatch(
+        addMembersToUser({
+          member: { firstname: firstname, lastname: lastname },
+        }),
+      );
+      dispatch(resetAddMemberRequest());
+      membersArray.push({
+        id: membersArray.length,
+        firstname: firstname,
+        lastname: lastname,
+      });
+      setFirstname('');
+      setLastname('');
+    }
+  }, [addMemberRequest]);
 
   return (
     <>
@@ -95,9 +126,7 @@ const LandingPage = () => {
           </CInfosCard>
           <CInfosCard>
             <FormControl>
-              <FormLabel id="demo-controlled-radio-buttons-group">
-                Valider sa venue
-              </FormLabel>
+              <Typography>Valider sa venue</Typography>
               <RadioGroup
                 aria-labelledby="availability-radio-buttons-group"
                 name="availability-radio-buttons-group"
@@ -107,12 +136,12 @@ const LandingPage = () => {
                 }
               >
                 <FormControlLabel
-                  value="available"
+                  value={'true'}
                   control={<Radio color="secondary" />}
                   label="Disponible"
                 />
                 <FormControlLabel
-                  value="unavailable"
+                  value={'false'}
                   control={<Radio color="secondary" />}
                   label="Indisponible"
                 />
@@ -122,7 +151,16 @@ const LandingPage = () => {
               variant="contained"
               color="secondary"
               loading={false}
-              onClick={() => console.log('coucou')}
+              onClick={() =>
+                dispatch(
+                  updateConfirmationAsync({
+                    id: idUser,
+                    body: {
+                      Confirmation: availability === 'true',
+                    },
+                  }),
+                )
+              }
             >
               Valider
             </CLoadingButton>
@@ -178,17 +216,26 @@ const LandingPage = () => {
                 />
               </Box>
               <CLoadingIconButton
-                onClick={() => console.log('coucou')}
-                isLoading={false}
+                onClick={() =>
+                  dispatch(
+                    addMemberAsync({
+                      id: idUser,
+                      body: [{ firstname: firstname, lastname: lastname }],
+                    }),
+                  )
+                }
+                isLoading={addMemberRequest.status === ReduxStatus.Loading}
                 icon={<AddCircleIcon />}
                 color={'secondary'}
               />
             </Box>
           </Box>
         </CInfosCard>
-        <CInfosCard>
-          <TableMorePeople data={fakeData} />
-        </CInfosCard>
+        {getUserByIdRequest.data.members.length > 0 && (
+          <CInfosCard>
+            <TableMorePeople data={membersArray} />
+          </CInfosCard>
+        )}
       </Box>
       <Box sx={landingPageStyles(theme).background(imageHome2)} />
       {/* ------------------------------------Troisimème wrapper------------------------------------ */}

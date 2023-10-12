@@ -1,7 +1,9 @@
 import {
+  Alert,
   Box,
   IconButton,
   InputAdornment,
+  Snackbar,
   Typography,
   useTheme,
 } from '@mui/material';
@@ -24,7 +26,12 @@ import {
 } from 'src/store/auth/authAsync';
 import { useAppSelector } from 'src/hooks';
 import { ReduxStatus } from 'src/utils/types/reduxStatusValues';
-import { resetLoginRequestStatus } from 'src/store/auth/authSlices/loginSlice';
+import {
+  resetLoginRequest,
+  resetLoginRequestStatus,
+} from 'src/store/auth/authSlices/loginSlice';
+import { resetResetPasswordRequest } from 'src/store/auth/authSlices/resetPasswordSlice';
+import { resetRegisterRequest } from 'src/store/auth/authSlices/registerSlice';
 
 const LoginPage = () => {
   const theme = useTheme();
@@ -34,17 +41,25 @@ const LoginPage = () => {
 
   const loginRequest = useAppSelector((state) => state.auth.login);
   const registerRequest = useAppSelector((state) => state.auth.register);
-  const restPasswordRequest = useAppSelector(
+  const resetPasswordRequest = useAppSelector(
     (state) => state.auth.resetPassword,
   );
 
   const [password, setPassword] = useState('');
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
+  const [firstname, setFirstname] = useState('');
+  const [lastname, setLastname] = useState('');
   const [code, setCode] = useState<'0000' | '0001'>('0000');
   const [showPassword, setShowPassword] = useState(false);
   const [isRegistering, setIsRegistering] = useState(false);
   const [resetingPassword, setResetingPassword] = useState(false);
+  const [registerSnackbarOpen, setRegisterSnackbarOpen] =
+    useState<boolean>(false);
+
+  useEffect(() => {
+    dispatch(resetLoginRequest());
+    dispatch(resetResetPasswordRequest());
+    dispatch(resetRegisterRequest());
+  }, []);
 
   useEffect(() => {
     if (loginRequest.status === ReduxStatus.Succeeded) {
@@ -60,11 +75,18 @@ const LoginPage = () => {
   }, [isRegistering]);
 
   useEffect(() => {
-    if (restPasswordRequest.status === ReduxStatus.Succeeded) {
+    if (resetPasswordRequest.status === ReduxStatus.Succeeded) {
       setIsRegistering(false);
       setResetingPassword(false);
     }
-  }, [restPasswordRequest]);
+  }, [resetPasswordRequest]);
+
+  useEffect(() => {
+    if (registerRequest.status === ReduxStatus.Succeeded) {
+      setIsRegistering(false);
+      setRegisterSnackbarOpen(true);
+    }
+  }, [registerRequest]);
 
   return (
     <>
@@ -81,19 +103,21 @@ const LoginPage = () => {
                 Anniversaire Dudu 2024
               </Typography>
             )}
-            {isRegistering && <Typography>Inscription</Typography>}
+            {isRegistering && !resetingPassword && (
+              <Typography>Inscription</Typography>
+            )}
             {isRegistering && (
               <CTextField
                 label={'Prénom'}
-                setValue={setFirstName}
-                value={firstName}
+                setValue={setFirstname}
+                value={firstname}
                 sx={{ width: '100%' }}
               />
             )}
             <CTextField
               label={'Nom'}
-              setValue={setLastName}
-              value={lastName}
+              setValue={setLastname}
+              value={lastname}
               sx={{ width: '100%' }}
             ></CTextField>
             <CTextField
@@ -118,25 +142,24 @@ const LoginPage = () => {
                 </InputAdornment>
               }
             />
-            <Box sx={{ width: '100%' }}>
-              <Typography
-                variant="body2"
-                sx={{ cursor: 'pointer', textDecoration: 'underline' }}
-                onClick={() => {
-                  setResetingPassword(true);
-                  setIsRegistering(true);
-                }}
-              >
-                Mot de passe oublié ?
-              </Typography>
-            </Box>
+            {!isRegistering && (
+              <Box sx={{ width: '100%' }}>
+                <Typography
+                  variant="body2"
+                  sx={{ cursor: 'pointer', textDecoration: 'underline' }}
+                  onClick={() => {
+                    setResetingPassword(true);
+                    setIsRegistering(true);
+                  }}
+                >
+                  Mot de passe oublié ?
+                </Typography>
+              </Box>
+            )}
             {loginRequest.status === ReduxStatus.Failed && (
               <Typography variant="body2" color={'error'}>
                 Nom ou mot de passe incorrect
               </Typography>
-            )}
-            {restPasswordRequest.status === ReduxStatus.Succeeded && (
-              <Typography variant="body2">Mot de passe modifié.</Typography>
             )}
             {isRegistering && (
               <CTextField
@@ -157,22 +180,22 @@ const LoginPage = () => {
                   ? resetingPassword
                     ? dispatch(
                         resetPasswordAsync({
-                          firstname: firstName,
-                          lastname: lastName,
+                          firstname: firstname,
+                          lastname: lastname,
                           mdp: password,
                           code: code,
                         }),
                       )
                     : dispatch(
                         registerAsync({
-                          firstname: firstName,
-                          lastname: lastName,
+                          firstname: firstname,
+                          lastname: lastname,
                           mdp: password,
                           code: code,
                         }),
                       )
                   : dispatch(
-                      loginlAsync({ lastname: lastName, mdpentered: password }),
+                      loginlAsync({ lastname: lastname, mdpentered: password }),
                     );
               }}
             >
@@ -181,9 +204,18 @@ const LoginPage = () => {
             <CButton onClick={() => setIsRegistering(!isRegistering)}>
               {isRegistering ? 'Annuler' : "S'inscrire"}
             </CButton>
+            {resetPasswordRequest.status === ReduxStatus.Succeeded && (
+              <Alert severity="success">Mot de passe modifié.</Alert>
+            )}
           </Box>
         </Box>
       </Box>
+      <Snackbar
+        open={registerSnackbarOpen}
+        autoHideDuration={2000}
+        onClose={() => setRegisterSnackbarOpen(false)}
+        message="Compte enregistré"
+      />
     </>
   );
 };

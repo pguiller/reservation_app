@@ -14,6 +14,9 @@ import line from 'src/assets/images/line.png';
 import logo from 'src/assets/images/logo512.png';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from 'src/store/store';
+import { resetLoginRequest } from 'src/store/auth/authSlices/loginSlice';
 
 interface Props {
   children?: React.ReactNode;
@@ -21,6 +24,7 @@ interface Props {
 
 const HomePage: React.FC<Props> = ({ children }) => {
   const theme = useTheme();
+  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const isMobile = useIsMobile();
   const isAdmin = true;
@@ -32,6 +36,7 @@ const HomePage: React.FC<Props> = ({ children }) => {
           variant="h2"
           color={'secondary'}
           onClick={() => navigate('/')}
+          sx={{ cursor: 'pointer' }}
         >
           {!isMobile ? 'Sylvie & Philippe 2024' : 'S&P'}
         </Typography>
@@ -44,7 +49,12 @@ const HomePage: React.FC<Props> = ({ children }) => {
           <IconButton onClick={() => navigate('/photos')}>
             <AddPhotoAlternateIcon color="secondary" />
           </IconButton>
-          <IconButton onClick={() => navigate('/login')}>
+          <IconButton
+            onClick={() => {
+              navigate('/login');
+              dispatch(resetLoginRequest());
+            }}
+          >
             <LogoutIcon color="secondary" />
           </IconButton>
         </Box>

@@ -21,7 +21,7 @@ export interface UpdateConfirmationPayload {
 }
 
 export interface AddMemberInfos {
-  lastaname: string;
+  lastname: string;
   firstname: string;
 }
 

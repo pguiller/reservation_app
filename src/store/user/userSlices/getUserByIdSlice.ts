@@ -24,6 +24,26 @@ const getUserByIdSlice = createSlice({
   initialState,
   reducers: {
     resetGetUserByIdRequest: () => initialState,
+    addMembersToUser: (state, action) => {
+      const { member } = action.payload;
+      const newData = [...state.data.members];
+
+      newData.push(member);
+      state.data.members = newData;
+    },
+    removeMembersToUser: (state, action) => {
+      const { id } = action.payload;
+      const newData = [...state.data.members];
+
+      const indexToRemove = newData.findIndex((member) => member.Id === id);
+
+      console.log(indexToRemove);
+
+      if (indexToRemove !== -1) {
+        newData.splice(indexToRemove, 1);
+        state.data.members = newData;
+      }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -43,6 +63,10 @@ const getUserByIdSlice = createSlice({
   },
 });
 
-export const { resetGetUserByIdRequest } = getUserByIdSlice.actions;
+export const {
+  resetGetUserByIdRequest,
+  addMembersToUser,
+  removeMembersToUser,
+} = getUserByIdSlice.actions;
 
 export default getUserByIdSlice.reducer;

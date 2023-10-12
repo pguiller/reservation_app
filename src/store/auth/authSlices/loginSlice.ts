@@ -11,6 +11,7 @@ const initialState: AuthState = {
     errorMessage: '',
   },
   token: null,
+  userId: 0,
 };
 
 const loginSlice = createSlice({
@@ -30,7 +31,11 @@ const loginSlice = createSlice({
       .addCase(loginlAsync.fulfilled, (state, action) => {
         state.status = ReduxStatus.Succeeded;
         state.alert.successMessage = 'Login successful';
-        state.token = action.payload;
+        const { Authorization } = action.payload;
+        const [, token] = Authorization.split(' ');
+
+        state.token = token;
+        state.userId = action.payload.UserId;
       })
       .addCase(loginlAsync.rejected, (state, action) => {
         state.status = ReduxStatus.Failed;
