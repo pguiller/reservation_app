@@ -5,6 +5,7 @@ import getUserByIdSlice from './userSlices/getUserByIdSlice';
 import updateConfirmationSlice from './userSlices/updateConfirmationSlice';
 import deleteUserSlice from './userSlices/deleteUserSlice';
 import deleteMemberSlice from './userSlices/deleteMemberSlice';
+import addFakeUserSlice from './userSlices/addFakeUser';
 
 const userReducer = combineReducers({
   getUser: getUserSlice,
@@ -13,6 +14,7 @@ const userReducer = combineReducers({
   updateConfirmation: updateConfirmationSlice,
   deleteUser: deleteUserSlice,
   deleteMember: deleteMemberSlice,
+  addFakeUser: addFakeUserSlice,
 });
 
 export default userReducer;

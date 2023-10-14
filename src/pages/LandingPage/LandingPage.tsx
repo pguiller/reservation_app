@@ -28,6 +28,7 @@ import { ADRESS_EVENT } from 'src/config';
 import { useEffect, useRef, useState } from 'react';
 import CTextField from 'src/components/UI/CTextField/CTextField';
 import CLoadingIconButton from 'src/components/UI/CLoadingIconButton/CLoadingIconButton';
+import DoneIcon from '@mui/icons-material/Done';
 import TableMorePeople from './TableMorePeople/TableMorePeople';
 import { MorePeopleData } from 'src/utils/types/MorePeopleData';
 import { scrollTo } from 'src/utils/functions';
@@ -59,11 +60,15 @@ const LandingPage = () => {
   const idUser = useAppSelector((state) => state.auth.login.userId);
   const getUserByIdRequest = useAppSelector((state) => state.user.getUserById);
   const addMemberRequest = useAppSelector((state) => state.user.addMember);
+  const confirmationRequest = useAppSelector(
+    (state) => state.user.updateConfirmation,
+  );
 
   const [copySnackbarOpen, setCopySnackbarOpen] = useState<boolean>(false);
   const [firstname, setFirstname] = useState<string>('');
   const [lastname, setLastname] = useState<string>('');
-  const [availability, setAvailability] = useState<string>('');
+  const [availability, setAvailability] = useState<string | null>(null);
+
   const membersArray: MorePeopleData[] = getUserByIdRequest.data.members.map(
     (member: Member) => ({
       id: member.Id,
@@ -77,7 +82,9 @@ const LandingPage = () => {
   }, []);
 
   useEffect(() => {
-    console.log(getUserByIdRequest);
+    if (getUserByIdRequest.status === ReduxStatus.Succeeded) {
+      setAvailability(getUserByIdRequest.data.confirmation?.toString() ?? null);
+    }
   }, [getUserByIdRequest]);
 
   useEffect(() => {
@@ -150,7 +157,7 @@ const LandingPage = () => {
             <CLoadingButton
               variant="contained"
               color="secondary"
-              loading={false}
+              loading={confirmationRequest.status === ReduxStatus.Loading}
               onClick={() =>
                 dispatch(
                   updateConfirmationAsync({
@@ -162,7 +169,11 @@ const LandingPage = () => {
                 )
               }
             >
-              Valider
+              {confirmationRequest.status === ReduxStatus.Succeeded ? (
+                <DoneIcon />
+              ) : (
+                'Valider'
+              )}
             </CLoadingButton>
           </CInfosCard>
           <CInfosCard

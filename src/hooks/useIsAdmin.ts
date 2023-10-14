@@ -1,6 +1,10 @@
-const useIsAdmin = () =>
-  // const user = useAppSelector((state) => state.auth.login.user);
+import { useAppSelector } from 'src/hooks';
+import { decodeToken } from 'src/utils/functions';
 
-  true;
+const useIsAdmin = () => {
+  const token = useAppSelector((state) => state.auth.login.token);
+
+  return token !== null ? decodeToken(token).isAdmin : false;
+};
 
 export default useIsAdmin;

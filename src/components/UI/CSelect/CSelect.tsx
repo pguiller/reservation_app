@@ -42,6 +42,7 @@ type CSelectProps = {
     | undefined;
   fetchStatus?: ReduxStatus;
   errorMessage?: string;
+  disabled?: boolean;
 };
 
 const CSelect = ({
@@ -57,6 +58,7 @@ const CSelect = ({
   color,
   fetchStatus,
   errorMessage = 'Une erreur est survenue veuillez réessayer.',
+  disabled,
 }: CSelectProps) => {
   const theme = useTheme();
 
@@ -71,6 +73,7 @@ const CSelect = ({
           value={value}
           defaultValue={defaultValue}
           color={color}
+          disabled={disabled}
           onChange={(e: SelectChangeEvent) => {
             setValue(e.target.value);
             onChange && onChange();

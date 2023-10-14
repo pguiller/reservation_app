@@ -25,8 +25,8 @@ export const neutral = {
 };
 
 export const primary = withAlphas({
-  lightest: '#0084B8',
-  light: '#00587A',
+  lightest: '#EBF9FF',
+  light: '#85dcff',
   main: '#002a3a',
   dark: '#001D29',
   darkest: '#000F14',

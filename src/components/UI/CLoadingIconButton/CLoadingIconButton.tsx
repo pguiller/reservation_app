@@ -19,6 +19,7 @@ interface CLoadingIconButtonProps {
   isSuccess?: boolean;
   icon: React.ReactNode;
   tooltip?: string;
+  disabled?: boolean;
   color?:
     | OverridableStringUnion<
         | 'error'
@@ -41,6 +42,7 @@ const CLoadingIconButton: React.FC<CLoadingIconButtonProps> = ({
   isSuccess = false,
   icon,
   tooltip,
+  disabled,
   color = 'primary',
   sx,
 }) => {
@@ -57,7 +59,7 @@ const CLoadingIconButton: React.FC<CLoadingIconButtonProps> = ({
         <DoneIcon color="primary" />
       ) : (
         <Tooltip title={tooltip}>
-          <IconButton onClick={onClick} color={color}>
+          <IconButton onClick={onClick} color={color} disabled={disabled}>
             {icon}
           </IconButton>
         </Tooltip>

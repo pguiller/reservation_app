@@ -1,5 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import {
+  addFakeUser,
   addMember,
   deleteMember,
   deleteUser,
@@ -8,6 +9,7 @@ import {
   updateConfirmation,
 } from './userAPI';
 import {
+  AddFakeUserPayload,
   AddMemberInfos,
   DeleteMemberPayload,
   UpdateConfirmationPayload,
@@ -59,6 +61,15 @@ export const deleteMemberAsync = createAsyncThunk(
   'user/deletemember',
   async ({ id, body }: { id: number; body: DeleteMemberPayload }) => {
     const response = await deleteMember(id, body);
+
+    return response;
+  },
+);
+
+export const addFakeUserAsync = createAsyncThunk(
+  'user/addFakeUser',
+  async ({ body }: { body: AddFakeUserPayload }) => {
+    const response = await addFakeUser(body);
 
     return response;
   },

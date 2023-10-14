@@ -17,6 +17,8 @@ import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from 'src/store/store';
 import { resetLoginRequest } from 'src/store/auth/authSlices/loginSlice';
+import useIsAdmin from 'src/hooks/useIsAdmin';
+import useHeaderTransparent from 'src/hooks/useHeaderTransparant';
 
 interface Props {
   children?: React.ReactNode;
@@ -27,11 +29,12 @@ const HomePage: React.FC<Props> = ({ children }) => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const isMobile = useIsMobile();
-  const isAdmin = true;
+  const isAdmin = useIsAdmin();
+  const isTransparent = useHeaderTransparent();
 
   return (
     <>
-      <Box sx={homePageStyles(theme).header}>
+      <Box sx={homePageStyles(theme).header(isTransparent)}>
         <Typography
           variant="h2"
           color={'secondary'}

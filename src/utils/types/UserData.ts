@@ -1,10 +1,8 @@
-import { Member } from './Member';
-
-export interface User {
+export interface UserData {
   id: number;
   firstname: string;
   lastname: string;
   confirmation: boolean | null;
-  members: Member[];
+  isMember: boolean;
   idTable: number;
 }

@@ -17,7 +17,7 @@ export interface GetUserByIdRequest {
 }
 
 export interface UpdateConfirmationPayload {
-  Confirmation: boolean;
+  Confirmation: boolean | null;
 }
 
 export interface AddMemberInfos {
@@ -27,4 +27,10 @@ export interface AddMemberInfos {
 
 export interface DeleteMemberPayload {
   memberIds: number[];
+}
+
+export interface AddFakeUserPayload {
+  firstname: string;
+  lastname: string;
+  confirmation: boolean | null;
 }

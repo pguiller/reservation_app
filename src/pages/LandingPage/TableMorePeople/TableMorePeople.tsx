@@ -37,10 +37,6 @@ const TableMorePeople = ({ data }: TableMorePeopleProps) => {
   const [idClicked, setIdClicked] = useState<number>(0);
 
   useEffect(() => {
-    console.log('idclicked', idClicked);
-  }, [idClicked]);
-
-  useEffect(() => {
     if (deleteMemberRequest.status === ReduxStatus.Succeeded) {
       dispatch(removeMembersToUser({ id: idClicked }));
     }

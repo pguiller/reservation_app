@@ -2,7 +2,8 @@ import { SxProps, Theme } from '@mui/material';
 
 interface HomePageStyles {
   mainWrapper: SxProps;
-  header: SxProps;
+  // eslint-disable-next-line no-unused-vars
+  header: (isTransparent: boolean) => SxProps;
   iconsWrapper: SxProps;
   footer: SxProps;
 }
@@ -16,18 +17,20 @@ export const homePageStyles = (theme: Theme): HomePageStyles => ({
     paddingInline: '0!important',
   },
 
-  header: {
+  header: (isTransparent) => ({
     position: 'fixed',
     width: '100%',
     height: '64px',
-    backgroundColor: `${theme.palette.primary.main}40` /* Couleur de fond transparente */,
+    backgroundColor: isTransparent
+      ? `${theme.palette.primary.main}40`
+      : theme.palette.primary.main /* Couleur de fond transparente */,
     backdropFilter: 'blur(10px)' /* Flou du fond */,
     display: 'flex',
     alignContent: 'center',
     justifyContent: 'center',
     alignItems: 'center',
     zIndex: 1000,
-  },
+  }),
 
   iconsWrapper: {
     position: 'fixed',
