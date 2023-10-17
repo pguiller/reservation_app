@@ -1,43 +1,45 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-// import { useAppSelector } from 'src/hooks';
-// import jwt_decode from 'jwt-decode';
+import { useAppSelector } from 'src/hooks';
+import jwt_decode from 'jwt-decode';
 
 interface ProtectedRouteProps {
   children: JSX.Element;
   redirectPath?: string;
-  rolesHaveAccess?: string[];
+  isAdminPath?: boolean;
 }
 
-// interface TokenDecodedProps {
-//   token_type: string;
-//   exp: number;
-//   iat: number;
-//   jti: string;
-//   user_id: number;
-//   username: string;
-//   role: string;
-// }
+interface TokenDecodedProps {
+  id: string;
+  isAdmin: boolean;
+  iat: number;
+  exp: number;
+}
 
-const ProtectedRoute = ({ children, redirectPath }: ProtectedRouteProps) => {
-  // const token = useAppSelector((state) => state.auth.login.token);
-  // const tokenDecoded: TokenDecodedProps | null = token
-  //   ? jwt_decode(token)
-  //   : null;
+const ProtectedRoute = ({
+  children,
+  redirectPath,
+  isAdminPath = false,
+}: ProtectedRouteProps) => {
+  const token = useAppSelector((state) => state.auth.login.token);
+  const tokenDecoded: TokenDecodedProps | null = token
+    ? jwt_decode(token)
+    : null;
 
-  const isTokenValid = true;
-  const hasAccess = true;
-  // tokenDecoded && rolesHaveAccess?.includes(tokenDecoded.role);
+  const isTokenValid = tokenDecoded && tokenDecoded.exp * 1000 > Date.now();
+  const isAdmin = tokenDecoded && tokenDecoded.isAdmin;
 
   const renderContent = () => {
     if (isTokenValid) {
-      return hasAccess ? (
-        children
-      ) : (
-        <Navigate to={redirectPath || '/'} replace />
-      );
+      if (isAdmin) {
+        return children; // L'utilisateur est admin et a accès aux routes admin
+      } else if (!isAdmin && !isAdminPath) {
+        return children; // L'utilisateur n'est pas admin et a accès aux routes non-admin
+      } else {
+        return <Navigate to={redirectPath || '/'} replace />; // Redirection vers la page par défaut
+      }
     } else {
-      return <Navigate to="/login" replace />;
+      return <Navigate to="/login" replace />; // Redirection vers la page de connexion si le token n'est pas valide
     }
   };
 

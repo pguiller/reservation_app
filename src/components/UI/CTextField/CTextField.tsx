@@ -19,6 +19,8 @@ interface CTextFieldProps {
   onChange?: () => void;
   endAdornment?: ReactNode;
   accept?: string;
+  error?: boolean;
+  helperText?: string;
   focused?: boolean;
   placeholder?: string;
   color?:
@@ -48,6 +50,8 @@ const CTextField: React.FC<CTextFieldProps> = ({
   onChange,
   endAdornment,
   accept,
+  error,
+  helperText,
   focused = false,
   placeholder,
   color = 'primary',
@@ -67,6 +71,8 @@ const CTextField: React.FC<CTextFieldProps> = ({
       defaultValue={defaultValue}
       value={value}
       color={color}
+      error={error}
+      helperText={helperText}
       inputRef={inputRef}
       placeholder={placeholder}
       onChange={(event: React.ChangeEvent<HTMLInputElement>) => {

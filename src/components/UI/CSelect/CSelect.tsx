@@ -69,6 +69,7 @@ const CSelect = ({
       <FormControl sx={cSelectStyles(theme).select} size={size}>
         <InputLabel id={labelId} color={color} />
         <Select
+          fullWidth
           label={label}
           value={value}
           defaultValue={defaultValue}

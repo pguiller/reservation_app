@@ -126,6 +126,8 @@ const LoginPage = () => {
               value={password}
               type={showPassword ? 'text' : 'password'}
               sx={{ width: '100%' }}
+              error={password.length < 8}
+              helperText={password.length > 8 ? '' : 'Minimum 8 caractères'}
               endAdornment={
                 <InputAdornment position="end">
                   <IconButton
@@ -157,9 +159,12 @@ const LoginPage = () => {
               </Box>
             )}
             {loginRequest.status === ReduxStatus.Failed && (
-              <Typography variant="body2" color={'error'}>
+              <Alert
+                severity="error"
+                sx={{ fontFamily: 'unset', fontSize: '0.9em' }}
+              >
                 Nom ou mot de passe incorrect
-              </Typography>
+              </Alert>
             )}
             {isRegistering && (
               <CTextField
@@ -171,6 +176,7 @@ const LoginPage = () => {
             )}
             <CLoadingButton
               variant="contained"
+              disabled={password.length <= 8}
               loading={
                 loginRequest.status === ReduxStatus.Loading ||
                 registerRequest.status === ReduxStatus.Loading

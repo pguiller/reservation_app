@@ -7,6 +7,7 @@ interface CLoadingButtonProps {
   children?: React.ReactNode;
   onClick: () => void;
   loading?: boolean;
+  disabled?: boolean;
   variant?: 'contained' | 'text' | 'outlined';
   color?: 'primary' | 'secondary' | 'error' | 'info' | 'warning' | 'success';
   sx?: SxProps<Theme>;
@@ -17,6 +18,7 @@ const CLoadingButton: React.FC<CLoadingButtonProps> = ({
   variant,
   color = 'primary',
   loading,
+  disabled,
   onClick,
   sx,
 }) => {
@@ -31,6 +33,7 @@ const CLoadingButton: React.FC<CLoadingButtonProps> = ({
       variant={variant}
       onClick={() => onClick()}
       loading={loading}
+      disabled={disabled}
       color={color}
     >
       {children}

@@ -32,7 +32,7 @@ function App() {
                     <Route
                       path="/admin"
                       element={
-                        <ProtectedRoute redirectPath="/">
+                        <ProtectedRoute redirectPath="/" isAdminPath={true}>
                           <AdminPage />
                         </ProtectedRoute>
                       }

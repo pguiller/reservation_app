@@ -20,7 +20,7 @@ export const cSelectStyles = (theme: Theme): CSelectStyles => ({
   },
 
   select: {
-    width: '-webkit-fill-available',
+    width: 'inherit',
   },
 
   selectIconsWrapper: {

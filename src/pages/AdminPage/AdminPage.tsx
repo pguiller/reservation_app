@@ -227,6 +227,7 @@ const AdminPage = () => {
             label="Nom"
           />
           <CSelect
+            sx={adminPageStyles(theme).textFieldName}
             menuItems={availabiltySlectOptions}
             label="Disponibilité"
             value={availability}

@@ -51,7 +51,7 @@ export default function MUIWrapper({
   const muiWrapperUtils = useMemo(
     () => ({
       toggleColorMode: () => {
-        dispatch(switchThemeMode(mode === 'light' ? 'dark' : 'light'));
+        dispatch(switchThemeMode(mode === 'light' ? 'light' : 'light'));
       },
     }),
     [],

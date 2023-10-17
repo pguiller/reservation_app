@@ -1,6 +1,6 @@
 import { alpha } from '@mui/material/styles';
 import { Color } from './Color';
-import { amber, green, lightBlue, red } from '@mui/material/colors';
+import { amber, green, lightBlue, red, deepOrange } from '@mui/material/colors';
 
 const withAlphas = (color: Color) => ({
   ...color,
@@ -100,7 +100,7 @@ export const error = withAlphas({
   lightest: red[50],
   light: red[200],
   main: red[400],
-  dark: red[600],
+  dark: deepOrange[800],
   darkest: red[800],
   contrastText: '#FFFFFF',
 });
