@@ -30,12 +30,18 @@ const CImageInfosCard: React.FC<CImageInfosCardProps> = ({ infos, sx }) => {
       ]}
     >
       <Box sx={cImageInfosCardStyles(theme).container}>
-        <img src={infos.image} />
+        <Box sx={cImageInfosCardStyles(theme).imageContainer}>
+          <img src={infos.image} alt={infos.title} />
+        </Box>
         <Box sx={cImageInfosCardStyles(theme).infosContainer}>
           <Typography variant="h3" color={'secondary'}>
             {infos.title}
           </Typography>
-          <Typography variant="body1" color={'secondary'}>
+          <Typography
+            variant="body1"
+            color={'secondary'}
+            sx={{ textAlign: 'justify' }}
+          >
             {infos.description}
           </Typography>
           <Box sx={cImageInfosCardStyles(theme).iconsContainer}>

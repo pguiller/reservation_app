@@ -100,7 +100,7 @@ export const landingPageStyles = (theme: Theme): LandingPageStyles => ({
 
   hotelsWrapper: {
     display: 'grid',
-    gridTemplateColumns: '1fr 1fr',
+    gridTemplateColumns: '1fr',
     gap: theme.spacing(3),
     [theme.breakpoints.down('md')]: {
       gridTemplateColumns: '1fr',
