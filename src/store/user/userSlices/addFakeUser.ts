@@ -1,14 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { ReduxStatus } from 'src/utils/types/reduxStatusValues';
-import { NoDataResponse } from 'src/utils/types/redux';
 import { addFakeUserAsync } from '../userAsync';
+import { CreateFakeUserRequest } from '../types';
 
-const initialState: NoDataResponse = {
+const initialState: CreateFakeUserRequest = {
   status: ReduxStatus.Idle,
   error: null,
   alert: {
     successMessage: '',
     errorMessage: '',
+  },
+  data: {
+    id: 0,
   },
 };
 
@@ -21,9 +24,10 @@ const addFakeUserSlice = createSlice({
       .addCase(addFakeUserAsync.pending, (state: { status: string }) => {
         state.status = ReduxStatus.Loading;
       })
-      .addCase(addFakeUserAsync.fulfilled, (state) => {
+      .addCase(addFakeUserAsync.fulfilled, (state, action) => {
         state.status = ReduxStatus.Succeeded;
         state.alert.successMessage = 'addFakeUser successful';
+        state.data = action.payload;
       })
       .addCase(addFakeUserAsync.rejected, (state, action) => {
         state.status = ReduxStatus.Failed;

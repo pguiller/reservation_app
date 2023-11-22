@@ -39,3 +39,10 @@ export interface GetUserByCreatorRequest {
   alert: AlertState;
   data: User[];
 }
+
+export interface CreateFakeUserRequest {
+  status: ReduxStatus;
+  error: Error;
+  alert: AlertState;
+  data: { id: number };
+}

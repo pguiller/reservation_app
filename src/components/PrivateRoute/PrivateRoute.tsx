@@ -9,8 +9,8 @@ interface ProtectedRouteProps {
   isAdminPath?: boolean;
 }
 
-interface TokenDecodedProps {
-  id: string;
+export interface TokenDecodedProps {
+  id: number;
   isAdmin: boolean;
   iat: number;
   exp: number;

@@ -1,4 +1,5 @@
 import {
+  Alert,
   Box,
   Checkbox,
   FormControl,
@@ -109,7 +110,7 @@ const LandingPage = () => {
       dispatch(
         addItemUserCreatorList({
           user: {
-            Id: Math.random(),
+            id: addFakeUserRequest.data.id,
             lastname: lastname,
             firstname: firstname,
             confirmation: availability === 'true',
@@ -300,7 +301,14 @@ const LandingPage = () => {
               Vous venez à plusieurs ? Ajouter des personnes ici
             </Typography>
             <Box sx={landingPageStyles(theme).textFieldNameButtonWrapper}>
-              <Box sx={{ width: '100%', gap: theme.spacing(2) }}>
+              <Box
+                sx={{
+                  width: '100%',
+                  gap: theme.spacing(2),
+                  display: 'flex',
+                  flexDirection: 'column',
+                }}
+              >
                 <Box sx={landingPageStyles(theme).textFieldNameWrapper}>
                   <CTextField
                     value={firstname}
@@ -319,6 +327,12 @@ const LandingPage = () => {
                     focused
                   />
                 </Box>
+                {addFakeUserRequest.error ===
+                  'Request failed with status code 409' && (
+                  <Alert severity="error" sx={{ fontFamily: 'unset' }}>
+                    Un utilisateur porte déjà ce nom.
+                  </Alert>
+                )}
               </Box>
               <CLoadingIconButton
                 onClick={() =>

@@ -94,7 +94,7 @@ const LoginPage = () => {
         {!isMobile && (
           <Box sx={loginPageStyles(theme).title}>
             <Typography variant="h1">
-              Anniversairen Phillipe et Sylvie 2024
+              Anniversaire Phillipe et Sylvie 2024
             </Typography>
           </Box>
         )}

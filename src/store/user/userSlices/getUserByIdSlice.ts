@@ -11,7 +11,7 @@ const initialState: GetUserByIdRequest = {
     errorMessage: '',
   },
   data: {
-    Id: 0,
+    id: 0,
     idCreator: 0,
     firstname: '',
     lastname: '',
@@ -38,7 +38,7 @@ const getUserByIdSlice = createSlice({
     //   const { id } = action.payload;
     //   const newData = [...state.data.members];
 
-    //   const indexToRemove = newData.findIndex((member) => member.Id === id);
+    //   const indexToRemove = newData.findIndex((member) => member.id === id);
 
     //   if (indexToRemove !== -1) {
     //     newData.splice(indexToRemove, 1);

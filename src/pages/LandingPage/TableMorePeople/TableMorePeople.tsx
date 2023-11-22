@@ -38,15 +38,10 @@ const TableMorePeople = ({ data }: TableMorePeopleProps) => {
 
   useEffect(() => {
     if (deleteUserRequest.status === ReduxStatus.Succeeded) {
-      console.log(
-        getUserByIdCreatorRequest.data.findIndex(
-          (user) => user.Id === idClicked,
-        ),
-      );
       dispatch(
         removeItemUserCreatorList(
           getUserByIdCreatorRequest.data.findIndex(
-            (user) => user.Id === idClicked,
+            (user) => user.id === idClicked,
           ),
         ),
       );
@@ -55,7 +50,6 @@ const TableMorePeople = ({ data }: TableMorePeopleProps) => {
 
   useEffect(() => {
     if (getUserByIdCreatorRequest.status === ReduxStatus.Succeeded) {
-      console.log(idClicked);
       dispatch(deleteUserAsync(idClicked));
     }
   }, [idClicked]);
@@ -72,7 +66,7 @@ const TableMorePeople = ({ data }: TableMorePeopleProps) => {
         </TableHead>
         <TableBody>
           {data.map((row) => (
-            <TableRow sx={tableMorePeopleStyles(theme).tableRow} key={row.Id}>
+            <TableRow sx={tableMorePeopleStyles(theme).tableRow} key={row.id}>
               <TableCell sx={tableMorePeopleStyles(theme).tableCell}>
                 <Tooltip title={row.firstname}>
                   <Box sx={tableMorePeopleStyles(theme).textContainer}>
@@ -90,7 +84,7 @@ const TableMorePeople = ({ data }: TableMorePeopleProps) => {
               <TableCell sx={tableMorePeopleStyles(theme).tableCell}>
                 <CLoadingIconButton
                   onClick={() => {
-                    setIdClicked(row.Id);
+                    setIdClicked(row.id);
                   }}
                   isLoading={deleteUserRequest.status === ReduxStatus.Loading}
                   icon={<PersonRemoveIcon color="secondary" />}

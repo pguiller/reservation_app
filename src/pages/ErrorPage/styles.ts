@@ -14,6 +14,7 @@ export const errorPageStyles = (theme: Theme): ErrorPageStyles => ({
     alignItems: 'center',
     justifyContent: 'center',
     gap: theme.spacing(8),
+    height: '100vh',
   },
 
   oups: {

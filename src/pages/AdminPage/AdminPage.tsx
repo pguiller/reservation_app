@@ -35,6 +35,7 @@ import CStatusPill from 'src/components/UI/CStatusPill/CStatusPill';
 import EditIcon from '@mui/icons-material/Edit';
 import CancelIcon from '@mui/icons-material/Cancel';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import { updateConfirmationItemUserList } from 'src/store/user/userSlices/getUsersSlice';
 
 const availabiltySlectOptions: menuItem[] = [
   {
@@ -59,6 +60,9 @@ const AdminPage = () => {
   const getUsersRequest = useAppSelector((state) => state.user.getUser);
   const addFakeUserRequest = useAppSelector((state) => state.user.addFakeUser);
   const deleteUserRequest = useAppSelector((state) => state.user.deleteUser);
+  const updateUserRequest = useAppSelector(
+    (state) => state.user.updateConfirmation,
+  );
 
   const [firstname, setFirstname] = useState<string>('');
   const [lastname, setLastname] = useState<string>('');
@@ -67,7 +71,7 @@ const AdminPage = () => {
   const [selectedModifyOption, setSelectedModifyOption] = useState<
     Record<number, string>
   >({});
-  const [isEditingId, setisEditingId] = useState<number | null>(null);
+  const [isEditingId, setIsEditingId] = useState<number | null>(null);
   const [ghestNumber, setGhestNumber] = useState({
     totalNumber: 0,
     availableNumber: 0,
@@ -139,9 +143,12 @@ const AdminPage = () => {
         const selectedValue = selectedModifyOption[params.row.id];
         const defaultAvailability =
           dataRows.length > 0
-            ? dataRows[params.row.id - 1].confirmation === true
+            ? dataRows[dataRows.findIndex((user) => user.id === params.row.id)]
+                .confirmation === true
               ? 'Disponible'
-              : dataRows[params.row.id - 1].confirmation === false
+              : dataRows[
+                  dataRows.findIndex((user) => user.id === params.row.id)
+                ].confirmation === false
               ? 'Indisponible'
               : 'Non répondu'
             : 'Non répondu';
@@ -166,6 +173,9 @@ const AdminPage = () => {
                     ...prevState,
                     [params.row.id]: newValue,
                   }));
+                  if (newValue !== 'Disponible') {
+                    setRowFormState(initialRowFormState);
+                  }
                 }}
                 labelId={'modify-availability-select'}
                 size="small"
@@ -189,6 +199,8 @@ const AdminPage = () => {
       renderCell: (params: GridCellParams) => {
         let dispoDej = 'Non répondu';
         let severity: 'warning' | 'success' | 'error' = 'warning';
+        let disabled: boolean =
+          params.row.confirmation === null || params.row.confirmation === false;
 
         if (params.row.confirmation) {
           dispoDej = params.row.confirmation_dej
@@ -197,6 +209,11 @@ const AdminPage = () => {
           severity = params.row.confirmation_dej ? 'success' : 'error';
         } else if (params.row.confirmation !== null) {
           severity = 'error';
+          dispoDej = 'Indisponible';
+        }
+
+        if (selectedModifyOption[params.row.id]) {
+          disabled = !(selectedModifyOption[params.row.id] === 'Disponible');
         }
 
         return (
@@ -209,10 +226,7 @@ const AdminPage = () => {
                 checked={dejRow}
                 onChange={handleRowChange}
                 name="dejRow"
-                disabled={
-                  params.row.confirmation === null ||
-                  params.row.confirmation === false
-                }
+                disabled={disabled}
               />
             )}
           </>
@@ -228,6 +242,8 @@ const AdminPage = () => {
       renderCell: (params: GridCellParams) => {
         let dispoBalade = 'Non répondu';
         let severity: 'warning' | 'success' | 'error' = 'warning';
+        let disabled: boolean =
+          params.row.confirmation === null || params.row.confirmation === false;
 
         if (params.row.confirmation) {
           dispoBalade = params.row.confirmation_balade
@@ -236,6 +252,11 @@ const AdminPage = () => {
           severity = params.row.confirmation_balade ? 'success' : 'error';
         } else if (params.row.confirmation !== null) {
           severity = 'error';
+          dispoBalade = 'Indisponible';
+        }
+
+        if (selectedModifyOption[params.row.id]) {
+          disabled = !(selectedModifyOption[params.row.id] === 'Disponible');
         }
 
         return (
@@ -248,10 +269,7 @@ const AdminPage = () => {
                 checked={baladeRow}
                 onChange={handleRowChange}
                 name="baladeRow"
-                disabled={
-                  params.row.confirmation === null ||
-                  params.row.confirmation === false
-                }
+                disabled={disabled}
               />
             )}
           </>
@@ -267,6 +285,8 @@ const AdminPage = () => {
       renderCell: (params: GridCellParams) => {
         let dispoSoiree = 'Non répondu';
         let severity: 'warning' | 'success' | 'error' = 'warning';
+        let disabled: boolean =
+          params.row.confirmation === null || params.row.confirmation === false;
 
         if (params.row.confirmation) {
           dispoSoiree = params.row.confirmation_diner
@@ -275,6 +295,11 @@ const AdminPage = () => {
           severity = params.row.confirmation_diner ? 'success' : 'error';
         } else if (params.row.confirmation !== null) {
           severity = 'error';
+          dispoSoiree = 'Indisponible';
+        }
+
+        if (selectedModifyOption[params.row.id]) {
+          disabled = !(selectedModifyOption[params.row.id] === 'Disponible');
         }
 
         return (
@@ -287,10 +312,7 @@ const AdminPage = () => {
                 checked={soireeRow}
                 onChange={handleRowChange}
                 name="soireeRow"
-                disabled={
-                  params.row.confirmation === null ||
-                  params.row.confirmation === false
-                }
+                disabled={disabled}
               />
             )}
           </>
@@ -307,7 +329,7 @@ const AdminPage = () => {
           {isEditingId !== params.row.id && (
             <IconButton
               onClick={() => {
-                setisEditingId(params.row.id);
+                setIsEditingId(params.row.id);
                 setRowFormState({
                   dejRow:
                     params.row.confirmation === null ||
@@ -335,33 +357,59 @@ const AdminPage = () => {
               <IconButton
                 onClick={() => {
                   setRowFormState(initialRowFormState);
-                  setisEditingId(null);
+                  setIsEditingId(null);
                 }}
               >
                 <CancelIcon color="error" />
               </IconButton>
               <IconButton
+                color="success"
                 onClick={() => {
-                  console.log(selectedModifyOption);
                   dispatch(
                     updateConfirmationAsync({
                       id: params.row.id,
                       body: {
-                        confirmation:
-                          selectedModifyOption[params.row.id] === 'true'
+                        confirmation: selectedModifyOption[params.row.id]
+                          ? selectedModifyOption[params.row.id] === 'Disponible'
                             ? true
-                            : selectedModifyOption[params.row.id] === 'false'
+                            : selectedModifyOption[params.row.id] ===
+                              'Indisponible'
                             ? false
-                            : null,
-                        confirmation_dej: dejRow,
-                        confirmation_balade: baladeRow,
-                        confirmation_diner: soireeRow,
+                            : null
+                          : params.row.confirmation,
+                        confirmation_dej:
+                          selectedModifyOption[params.row.id] === 'Indisponible'
+                            ? false
+                            : selectedModifyOption[params.row.id] ===
+                              'Non Répondu'
+                            ? null
+                            : dejRow !== null
+                            ? dejRow
+                            : false,
+                        confirmation_balade:
+                          selectedModifyOption[params.row.id] === 'Indisponible'
+                            ? false
+                            : selectedModifyOption[params.row.id] ===
+                              'Non Répondu'
+                            ? null
+                            : baladeRow !== null
+                            ? baladeRow
+                            : false,
+                        confirmation_diner:
+                          selectedModifyOption[params.row.id] === 'Indisponible'
+                            ? false
+                            : selectedModifyOption[params.row.id] ===
+                              'Non Répondu'
+                            ? null
+                            : soireeRow !== null
+                            ? soireeRow
+                            : false,
                       },
                     }),
                   );
                 }}
               >
-                <CheckCircleIcon color="success" />
+                <CheckCircleIcon />
               </IconButton>
             </Box>
           )}
@@ -376,14 +424,17 @@ const AdminPage = () => {
       disableExport: true,
       type: 'string',
       renderCell: (params: GridCellParams) => (
-        <CLoadingIconButton
-          isLoading={false}
-          icon={<PersonRemoveIcon />}
-          disabled={false}
-          onClick={() => {
-            dispatch(deleteUserAsync(params.row.idTable));
-          }}
-        />
+        <>
+          {params.row.id !== idUser && (
+            <CLoadingIconButton
+              isLoading={deleteUserRequest.status === ReduxStatus.Loading}
+              icon={<PersonRemoveIcon />}
+              onClick={() => {
+                dispatch(deleteUserAsync(params.row.id));
+              }}
+            />
+          )}
+        </>
       ),
     },
   ];
@@ -412,6 +463,52 @@ const AdminPage = () => {
       dispatch(getUsersAsync());
     }
   }, [deleteUserRequest]);
+
+  useEffect(() => {
+    if (updateUserRequest.status === ReduxStatus.Succeeded) {
+      let confirmationValue = null;
+
+      if (
+        selectedModifyOption[
+          getUsersRequest.data[
+            getUsersRequest.data.findIndex((user) => user.id === isEditingId)
+          ].id
+        ]
+      ) {
+        confirmationValue =
+          selectedModifyOption[
+            getUsersRequest.data[
+              getUsersRequest.data.findIndex((user) => user.id === isEditingId)
+            ].id
+          ] === 'Disponible'
+            ? true
+            : selectedModifyOption[
+                getUsersRequest.data[
+                  getUsersRequest.data.findIndex(
+                    (user) => user.id === isEditingId,
+                  )
+                ].id
+              ] === 'Indisponible'
+            ? false
+            : null;
+      } else {
+        confirmationValue =
+          getUsersRequest.data[
+            getUsersRequest.data.findIndex((user) => user.id === isEditingId)
+          ].confirmation;
+      }
+      dispatch(
+        updateConfirmationItemUserList({
+          id: isEditingId,
+          confirmation: confirmationValue,
+          confirmation_dej: dejRow,
+          confirmation_balade: baladeRow,
+          confirmation_diner: soireeRow,
+        }),
+      );
+      setIsEditingId(null);
+    }
+  }, [updateUserRequest]);
 
   useEffect(() => {
     setGhestNumber({

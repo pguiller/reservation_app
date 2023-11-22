@@ -2,6 +2,8 @@ import { createSlice } from '@reduxjs/toolkit';
 import { ReduxStatus } from 'src/utils/types/reduxStatusValues';
 import { loginlAsync } from '../authAsync';
 import { AuthState } from '../types';
+import jwt_decode from 'jwt-decode';
+import { TokenDecodedProps } from 'src/components/PrivateRoute/PrivateRoute';
 
 const initialState: AuthState = {
   status: ReduxStatus.Idle,
@@ -34,8 +36,12 @@ const loginSlice = createSlice({
         const { Authorization } = action.payload;
         const [, token] = Authorization.split(' ');
 
+        const tokenDecoded: TokenDecodedProps | null = token
+          ? jwt_decode(token)
+          : null;
+
         state.token = token;
-        state.userId = action.payload.UserId;
+        state.userId = tokenDecoded?.id as number;
       })
       .addCase(loginlAsync.rejected, (state, action) => {
         state.status = ReduxStatus.Failed;

@@ -25,6 +25,23 @@ const getUsersSlice = createSlice({
       newData[id] = user;
       state.data = newData;
     },
+    updateConfirmationItemUserList: (state, action) => {
+      const {
+        id,
+        confirmation,
+        confirmation_dej,
+        confirmation_balade,
+        confirmation_diner,
+      } = action.payload;
+      const newData = [...state.data];
+      const idTable = newData.findIndex((user) => user.id === id);
+
+      newData[idTable].confirmation = confirmation;
+      newData[idTable].confirmation_dej = confirmation_dej;
+      newData[idTable].confirmation_balade = confirmation_balade;
+      newData[idTable].confirmation_diner = confirmation_diner;
+      state.data = newData;
+    },
     addItemUserList: (state, action) => {
       const { user } = action.payload;
       const newData = [...user, ...state.data];
@@ -61,6 +78,7 @@ const getUsersSlice = createSlice({
 export const {
   resetGetUsersRequest,
   updateItemUserList,
+  updateConfirmationItemUserList,
   addItemUserList,
   removeItemUserList,
 } = getUsersSlice.actions;

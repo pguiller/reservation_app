@@ -1,5 +1,5 @@
 export interface MorePeopleData {
-  Id: number;
+  id: number;
   firstname: string;
   lastname: string;
 }
