@@ -13,7 +13,7 @@ import useIsMobile from 'src/hooks/useIsMobile';
 import line from 'src/assets/images/line.png';
 import logo from 'src/assets/images/logo512.png';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
-import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
+// import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from 'src/store/store';
 import { resetLoginRequest } from 'src/store/auth/authSlices/loginSlice';
@@ -49,9 +49,9 @@ const HomePage: React.FC<Props> = ({ children }) => {
               <AdminPanelSettingsIcon color="secondary" />
             </IconButton>
           )}
-          <IconButton onClick={() => navigate('/photos')}>
+          {/* <IconButton onClick={() => navigate('/photos')}>
             <AddPhotoAlternateIcon color="secondary" />
-          </IconButton>
+          </IconButton> */}
           <IconButton
             onClick={() => {
               navigate('/login');

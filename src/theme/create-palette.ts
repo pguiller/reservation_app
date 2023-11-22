@@ -19,7 +19,7 @@ export function createPalette(mode: 'light' | 'dark') {
       mode === 'light'
         ? {
             active: neutral[500],
-            disabled: alpha(neutral[900], 0.38),
+            disabled: alpha(secondary.main, 0.38),
             disabledBackground: alpha(neutral[900], 0.12),
             focus: alpha(neutral[900], 0.16),
             hover: alpha(neutral[900], 0.04),
@@ -56,7 +56,7 @@ export function createPalette(mode: 'light' | 'dark') {
         ? {
             primary: neutral[900],
             secondary: neutral[500],
-            disabled: alpha(neutral[900], 0.38),
+            disabled: alpha(secondary.main, 0.38),
           }
         : {
             primary: neutral[50],

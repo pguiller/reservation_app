@@ -5,6 +5,7 @@ interface LandingPageStyles {
   // eslint-disable-next-line no-unused-vars
   background: (image: string) => SxProps;
   firstWrapper: SxProps;
+  adressWrapper: SxProps;
   secondWrapper: SxProps;
   gridWrapper: SxProps;
   addPersonWrapper: SxProps;
@@ -12,6 +13,8 @@ interface LandingPageStyles {
   textFieldNameButtonWrapper: SxProps;
   textFieldName: SxProps;
   hotelsWrapper: SxProps;
+  formGroupNew: SxProps;
+  formGroupCheckboxNew: SxProps;
 }
 
 export const landingPageStyles = (theme: Theme): LandingPageStyles => ({
@@ -48,9 +51,16 @@ export const landingPageStyles = (theme: Theme): LandingPageStyles => ({
     },
   },
 
+  adressWrapper: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'start',
+    textAlign: 'left',
+  },
+
   gridWrapper: {
     display: 'grid',
-    gridTemplateColumns: '1fr 1fr 1fr',
+    gridTemplateColumns: '1fr 1fr',
     width: '100%',
     gap: theme.spacing(2),
     [theme.breakpoints.down('md')]: {
@@ -80,6 +90,17 @@ export const landingPageStyles = (theme: Theme): LandingPageStyles => ({
     gap: theme.spacing(2),
     alignItems: 'center',
     width: '100%',
+  },
+
+  formGroupNew: {
+    display: 'flex',
+    flexDirection: 'row',
+  },
+
+  formGroupCheckboxNew: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
   },
 
   textFieldNameWrapper: {

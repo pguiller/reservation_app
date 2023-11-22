@@ -11,12 +11,14 @@ const initialState: GetUserByIdRequest = {
     errorMessage: '',
   },
   data: {
-    id: 0,
+    Id: 0,
+    idCreator: 0,
     firstname: '',
     lastname: '',
-    confirmation: null,
-    members: [],
-    idTable: 0,
+    confirmation: false,
+    confirmation_dej: false,
+    confirmation_balade: false,
+    confirmation_diner: false,
   },
 };
 
@@ -25,24 +27,24 @@ const getUserByIdSlice = createSlice({
   initialState,
   reducers: {
     resetGetUserByIdRequest: () => initialState,
-    addMembersToUser: (state, action) => {
-      const { member } = action.payload;
-      const newData = [...state.data.members];
+    // addMembersToUser: (state, action) => {
+    //   const { member } = action.payload;
+    //   const newData = [...state.data.members];
 
-      newData.push(member);
-      state.data.members = newData;
-    },
-    removeMembersToUser: (state, action) => {
-      const { id } = action.payload;
-      const newData = [...state.data.members];
+    //   newData.push(member);
+    //   state.data.members = newData;
+    // },
+    // removeMembersToUser: (state, action) => {
+    //   const { id } = action.payload;
+    //   const newData = [...state.data.members];
 
-      const indexToRemove = newData.findIndex((member) => member.Id === id);
+    //   const indexToRemove = newData.findIndex((member) => member.Id === id);
 
-      if (indexToRemove !== -1) {
-        newData.splice(indexToRemove, 1);
-        state.data.members = newData;
-      }
-    },
+    //   if (indexToRemove !== -1) {
+    //     newData.splice(indexToRemove, 1);
+    //     state.data.members = newData;
+    //   }
+    // },
   },
   extraReducers: (builder) => {
     builder
@@ -64,8 +66,8 @@ const getUserByIdSlice = createSlice({
 
 export const {
   resetGetUserByIdRequest,
-  addMembersToUser,
-  removeMembersToUser,
+  // addMembersToUser,
+  // removeMembersToUser,
 } = getUserByIdSlice.actions;
 
 export default getUserByIdSlice.reducer;

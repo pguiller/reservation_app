@@ -6,6 +6,7 @@ interface AdminPageStyles {
   statsWrapper: SxProps;
   addUserCard: SxProps;
   addUserWrapper: SxProps;
+  checkboxWrapper: SxProps;
   textFieldName: SxProps;
   card: SxProps;
 }
@@ -47,6 +48,16 @@ export const adminPageStyles = (theme: Theme): AdminPageStyles => ({
     gridTemplateColumns: '1fr 1fr 1fr',
     [theme.breakpoints.down('sm')]: {
       gridTemplateColumns: '1fr',
+    },
+  },
+
+  checkboxWrapper: {
+    display: 'flex',
+    width: '100%',
+    gap: theme.spacing(2),
+    flexDirection: 'row',
+    [theme.breakpoints.down('sm')]: {
+      flexDirection: 'column',
     },
   },
 

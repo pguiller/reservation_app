@@ -17,20 +17,25 @@ export interface GetUserByIdRequest {
 }
 
 export interface UpdateConfirmationPayload {
-  Confirmation: boolean | null;
-}
-
-export interface AddMemberInfos {
-  lastname: string;
-  firstname: string;
-}
-
-export interface DeleteMemberPayload {
-  memberIds: number[];
+  confirmation: boolean | null;
+  confirmation_dej: boolean | null;
+  confirmation_balade: boolean | null;
+  confirmation_diner: boolean | null;
 }
 
 export interface AddFakeUserPayload {
+  idCreator: number;
   firstname: string;
   lastname: string;
   confirmation: boolean | null;
+  confirmation_dej: boolean;
+  confirmation_balade: boolean;
+  confirmation_diner: boolean;
+}
+
+export interface GetUserByCreatorRequest {
+  status: ReduxStatus;
+  error: Error;
+  alert: AlertState;
+  data: User[];
 }

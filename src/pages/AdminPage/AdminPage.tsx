@@ -1,4 +1,13 @@
-import { Alert, Box, Typography, useTheme } from '@mui/material';
+import {
+  Alert,
+  Box,
+  Checkbox,
+  FormControlLabel,
+  FormGroup,
+  IconButton,
+  Typography,
+  useTheme,
+} from '@mui/material';
 import { useEffect, useState } from 'react';
 import { adminPageStyles } from './styles';
 import CInfosCard from 'src/components/UI/CInfosCard/CInfosCard';
@@ -14,16 +23,18 @@ import { AppDispatch } from 'src/store/store';
 import { useDispatch } from 'react-redux';
 import {
   addFakeUserAsync,
-  deleteMemberAsync,
   deleteUserAsync,
   getUsersAsync,
   updateConfirmationAsync,
 } from 'src/store/user/userAsync';
 import { useAppSelector } from 'src/hooks';
 import { ReduxStatus } from 'src/utils/types/reduxStatusValues';
-import { createUSersMembersData } from 'src/utils/functions';
-import { UserData } from 'src/utils/types/UserData';
 import { resetAddFakeUserRequest } from 'src/store/user/userSlices/addFakeUser';
+import { User } from 'src/utils/types/User';
+import CStatusPill from 'src/components/UI/CStatusPill/CStatusPill';
+import EditIcon from '@mui/icons-material/Edit';
+import CancelIcon from '@mui/icons-material/Cancel';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 const availabiltySlectOptions: menuItem[] = [
   {
@@ -44,23 +55,64 @@ const AdminPage = () => {
   const theme = useTheme();
   const dispatch = useDispatch<AppDispatch>();
 
+  const idUser = useAppSelector((state) => state.auth.login.userId);
   const getUsersRequest = useAppSelector((state) => state.user.getUser);
   const addFakeUserRequest = useAppSelector((state) => state.user.addFakeUser);
   const deleteUserRequest = useAppSelector((state) => state.user.deleteUser);
-  const deleteMemberRequest = useAppSelector(
-    (state) => state.user.deleteMember,
-  );
 
   const [firstname, setFirstname] = useState<string>('');
   const [lastname, setLastname] = useState<string>('');
   const [availability, setAvailability] = useState<string>('Non répondu');
-  const [dataRows, setDataRows] = useState<UserData[]>([]);
+  const [dataRows, setDataRows] = useState<User[]>([]);
   const [selectedModifyOption, setSelectedModifyOption] = useState<
     Record<number, string>
   >({});
-  const [ghestNumber, setGhestNumber] = useState<number>(0);
-  const [ghestNumberAvailable, setGhestNumberAvailable] = useState<number>(0);
-  const [ghestNumberWaiting, setGhestNumberWaiting] = useState<number>(0);
+  const [isEditingId, setisEditingId] = useState<number | null>(null);
+  const [ghestNumber, setGhestNumber] = useState({
+    totalNumber: 0,
+    availableNumber: 0,
+    waitingNumber: 0,
+    dejNumber: 0,
+    baladeNumber: 0,
+    soireeNumber: 0,
+  });
+  const [formState, setFormState] = useState({
+    dej: false,
+    balade: false,
+    soiree: false,
+  });
+
+  const initialRowFormState = {
+    dejRow: false,
+    baladeRow: false,
+    soireeRow: false,
+  };
+  const [rowFormState, setRowFormState] = useState(initialRowFormState);
+
+  const { dej, balade, soiree } = formState;
+  const { dejRow, baladeRow, soireeRow } = rowFormState;
+  const {
+    totalNumber,
+    availableNumber,
+    waitingNumber,
+    dejNumber,
+    baladeNumber,
+    soireeNumber,
+  } = ghestNumber;
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setFormState({
+      ...formState,
+      [event.target.name]: event.target.checked,
+    });
+  };
+
+  const handleRowChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setRowFormState({
+      ...rowFormState,
+      [event.target.name]: event.target.checked,
+    });
+  };
 
   const columnsUsers: GridColDef[] = [
     {
@@ -78,7 +130,7 @@ const AdminPage = () => {
       flex: 1,
     },
     {
-      field: 'availability',
+      field: 'confirmation',
       sortable: true,
       flex: 1,
       headerName: 'Réponse',
@@ -94,36 +146,227 @@ const AdminPage = () => {
               : 'Non répondu'
             : 'Non répondu';
 
+        const severity =
+          defaultAvailability === 'Indisponible'
+            ? 'error'
+            : defaultAvailability === 'Disponible'
+            ? 'success'
+            : 'warning';
+
         return (
-          <CSelect
-            sx={{ width: '100%' }}
-            menuItems={availabiltySlectOptions}
-            value={selectedValue || defaultAvailability}
-            disabled={params.row.isMember}
-            setValue={(newValue: string) => {
-              setSelectedModifyOption((prevState) => ({
-                ...prevState,
-                [params.row.id]: newValue,
-              }));
-              dispatch(
-                updateConfirmationAsync({
-                  id: params.row.idTable,
-                  body: {
-                    Confirmation:
-                      newValue === 'Disponible'
-                        ? true
-                        : newValue === 'Indisponible'
-                        ? false
-                        : null,
-                  },
-                }),
-              );
-            }}
-            labelId={'modify-availability-select'}
-            size="small"
-          />
+          <>
+            {isEditingId === params.row.id && (
+              <CSelect
+                sx={{ width: '100%' }}
+                menuItems={availabiltySlectOptions}
+                value={selectedValue || defaultAvailability}
+                disabled={params.row.isMember}
+                setValue={(newValue: string) => {
+                  setSelectedModifyOption((prevState) => ({
+                    ...prevState,
+                    [params.row.id]: newValue,
+                  }));
+                }}
+                labelId={'modify-availability-select'}
+                size="small"
+              />
+            )}
+            {isEditingId !== params.row.id && (
+              <CStatusPill severity={severity}>
+                {defaultAvailability}
+              </CStatusPill>
+            )}
+          </>
         );
       },
+    },
+    {
+      field: 'confirmation_dej',
+      sortable: true,
+      flex: 1,
+      headerName: 'Déjeuner',
+      type: 'string',
+      renderCell: (params: GridCellParams) => {
+        let dispoDej = 'Non répondu';
+        let severity: 'warning' | 'success' | 'error' = 'warning';
+
+        if (params.row.confirmation) {
+          dispoDej = params.row.confirmation_dej
+            ? 'Disponible'
+            : 'Indisponible';
+          severity = params.row.confirmation_dej ? 'success' : 'error';
+        } else if (params.row.confirmation !== null) {
+          severity = 'error';
+        }
+
+        return (
+          <>
+            {isEditingId !== params.row.id && (
+              <CStatusPill severity={severity}>{dispoDej}</CStatusPill>
+            )}
+            {isEditingId === params.row.id && (
+              <Checkbox
+                checked={dejRow}
+                onChange={handleRowChange}
+                name="dejRow"
+                disabled={
+                  params.row.confirmation === null ||
+                  params.row.confirmation === false
+                }
+              />
+            )}
+          </>
+        );
+      },
+    },
+    {
+      field: 'confirmation_balade',
+      sortable: true,
+      flex: 1,
+      headerName: 'Après-midi',
+      type: 'string',
+      renderCell: (params: GridCellParams) => {
+        let dispoBalade = 'Non répondu';
+        let severity: 'warning' | 'success' | 'error' = 'warning';
+
+        if (params.row.confirmation) {
+          dispoBalade = params.row.confirmation_balade
+            ? 'Disponible'
+            : 'Indisponible';
+          severity = params.row.confirmation_balade ? 'success' : 'error';
+        } else if (params.row.confirmation !== null) {
+          severity = 'error';
+        }
+
+        return (
+          <>
+            {isEditingId !== params.row.id && (
+              <CStatusPill severity={severity}>{dispoBalade}</CStatusPill>
+            )}
+            {isEditingId === params.row.id && (
+              <Checkbox
+                checked={baladeRow}
+                onChange={handleRowChange}
+                name="baladeRow"
+                disabled={
+                  params.row.confirmation === null ||
+                  params.row.confirmation === false
+                }
+              />
+            )}
+          </>
+        );
+      },
+    },
+    {
+      field: 'confirmation_soiree',
+      sortable: true,
+      flex: 1,
+      headerName: 'Soirée',
+      type: 'string',
+      renderCell: (params: GridCellParams) => {
+        let dispoSoiree = 'Non répondu';
+        let severity: 'warning' | 'success' | 'error' = 'warning';
+
+        if (params.row.confirmation) {
+          dispoSoiree = params.row.confirmation_diner
+            ? 'Disponible'
+            : 'Indisponible';
+          severity = params.row.confirmation_diner ? 'success' : 'error';
+        } else if (params.row.confirmation !== null) {
+          severity = 'error';
+        }
+
+        return (
+          <>
+            {isEditingId !== params.row.id && (
+              <CStatusPill severity={severity}>{dispoSoiree}</CStatusPill>
+            )}
+            {isEditingId === params.row.id && (
+              <Checkbox
+                checked={soireeRow}
+                onChange={handleRowChange}
+                name="soireeRow"
+                disabled={
+                  params.row.confirmation === null ||
+                  params.row.confirmation === false
+                }
+              />
+            )}
+          </>
+        );
+      },
+    },
+    {
+      field: 'edit',
+      flex: 1,
+      headerName: 'Éditer',
+      type: 'string',
+      renderCell: (params: GridCellParams) => (
+        <>
+          {isEditingId !== params.row.id && (
+            <IconButton
+              onClick={() => {
+                setisEditingId(params.row.id);
+                setRowFormState({
+                  dejRow:
+                    params.row.confirmation === null ||
+                    params.row.confirmation === false
+                      ? null
+                      : params.row.confirmation_dej,
+                  baladeRow:
+                    params.row.confirmation === null ||
+                    params.row.confirmation === false
+                      ? null
+                      : params.row.confirmation_balade,
+                  soireeRow:
+                    params.row.confirmation === null ||
+                    params.row.confirmation === false
+                      ? null
+                      : params.row.confirmation_diner,
+                });
+              }}
+            >
+              <EditIcon />
+            </IconButton>
+          )}
+          {isEditingId === params.row.id && (
+            <Box>
+              <IconButton
+                onClick={() => {
+                  setRowFormState(initialRowFormState);
+                  setisEditingId(null);
+                }}
+              >
+                <CancelIcon color="error" />
+              </IconButton>
+              <IconButton
+                onClick={() => {
+                  console.log(selectedModifyOption);
+                  dispatch(
+                    updateConfirmationAsync({
+                      id: params.row.id,
+                      body: {
+                        confirmation:
+                          selectedModifyOption[params.row.id] === 'true'
+                            ? true
+                            : selectedModifyOption[params.row.id] === 'false'
+                            ? false
+                            : null,
+                        confirmation_dej: dejRow,
+                        confirmation_balade: baladeRow,
+                        confirmation_diner: soireeRow,
+                      },
+                    }),
+                  );
+                }}
+              >
+                <CheckCircleIcon color="success" />
+              </IconButton>
+            </Box>
+          )}
+        </>
+      ),
     },
     {
       field: 'delete',
@@ -138,9 +381,7 @@ const AdminPage = () => {
           icon={<PersonRemoveIcon />}
           disabled={false}
           onClick={() => {
-            params.row.isMember
-              ? dispatch(deleteMemberAsync(params.row.idTable))
-              : dispatch(deleteUserAsync(params.row.idTable));
+            dispatch(deleteUserAsync(params.row.idTable));
           }}
         />
       ),
@@ -153,7 +394,7 @@ const AdminPage = () => {
 
   useEffect(() => {
     if (getUsersRequest.status === ReduxStatus.Succeeded) {
-      setDataRows(createUSersMembersData(getUsersRequest.data));
+      setDataRows(getUsersRequest.data);
     }
   }, [getUsersRequest]);
 
@@ -162,14 +403,9 @@ const AdminPage = () => {
       dispatch(getUsersAsync());
       setFirstname('');
       setLastname('');
+      setFormState({ dej: false, balade: false, soiree: false });
     }
   }, [addFakeUserRequest]);
-
-  useEffect(() => {
-    if (deleteMemberRequest.status === ReduxStatus.Succeeded) {
-      dispatch(getUsersAsync());
-    }
-  }, [deleteMemberRequest]);
 
   useEffect(() => {
     if (deleteUserRequest.status === ReduxStatus.Succeeded) {
@@ -178,17 +414,24 @@ const AdminPage = () => {
   }, [deleteUserRequest]);
 
   useEffect(() => {
-    setGhestNumber(dataRows.length);
-    setGhestNumberAvailable(
-      dataRows
+    setGhestNumber({
+      totalNumber: dataRows.length,
+      availableNumber: dataRows
         .map((row) => row.confirmation)
         .filter((confirmation) => confirmation === true).length,
-    );
-    setGhestNumberWaiting(
-      dataRows
+      waitingNumber: dataRows
         .map((row) => row.confirmation)
         .filter((confirmation) => confirmation === null).length,
-    );
+      dejNumber: dataRows
+        .map((row) => row.confirmation_dej)
+        .filter((confirmation) => confirmation).length,
+      baladeNumber: dataRows
+        .map((row) => row.confirmation_balade)
+        .filter((confirmation) => confirmation).length,
+      soireeNumber: dataRows
+        .map((row) => row.confirmation_diner)
+        .filter((confirmation) => confirmation).length,
+    });
   }, [dataRows]);
 
   return (
@@ -199,57 +442,107 @@ const AdminPage = () => {
       <Box sx={adminPageStyles(theme).statsWrapper}>
         <CInfosCard sx={adminPageStyles(theme).card}>
           <Typography variant="body1">{'Invités'}</Typography>
-          <Typography variant="h5">{ghestNumber}</Typography>
+          <Typography variant="h5">{totalNumber}</Typography>
         </CInfosCard>
         <CInfosCard sx={adminPageStyles(theme).card}>
           <Typography variant="body1">
-            {ghestNumberAvailable > 1 ? 'Disponibles' : 'Disponible'}
+            {availableNumber > 1 ? 'Disponibles' : 'Disponible'}
           </Typography>
-          <Typography variant="h5">{ghestNumberAvailable}</Typography>
+          <Typography variant="h5">{availableNumber}</Typography>
         </CInfosCard>
         <CInfosCard sx={adminPageStyles(theme).card}>
           <Typography variant="body1">{'En attente'}</Typography>
-          <Typography variant="h5">{ghestNumberWaiting}</Typography>
+          <Typography variant="h5">{waitingNumber}</Typography>
+        </CInfosCard>
+        <CInfosCard sx={adminPageStyles(theme).card}>
+          <Typography variant="body1">{'Déjeuner'}</Typography>
+          <Typography variant="h5">{dejNumber}</Typography>
+        </CInfosCard>
+        <CInfosCard sx={adminPageStyles(theme).card}>
+          <Typography variant="body1">{'Balade'}</Typography>
+          <Typography variant="h5">{baladeNumber}</Typography>
+        </CInfosCard>
+        <CInfosCard sx={adminPageStyles(theme).card}>
+          <Typography variant="body1">{'Soirée'}</Typography>
+          <Typography variant="h5">{soireeNumber}</Typography>
         </CInfosCard>
       </Box>
       <CInfosCard sx={adminPageStyles(theme).addUserCard}>
-        <Box sx={adminPageStyles(theme).addUserWrapper}>
-          <CTextField
-            sx={adminPageStyles(theme).textFieldName}
-            value={firstname}
-            setValue={setFirstname}
-            label="Prénom"
-          />
-          <CTextField
-            sx={adminPageStyles(theme).textFieldName}
-            value={lastname}
-            setValue={setLastname}
-            label="Nom"
-          />
-          <CSelect
-            sx={adminPageStyles(theme).textFieldName}
-            menuItems={availabiltySlectOptions}
-            label="Disponibilité"
-            value={availability}
-            setValue={setAvailability}
-            labelId={'availability'}
-          />
+        <Box sx={{ width: '100%' }}>
+          <Box sx={adminPageStyles(theme).addUserWrapper}>
+            <CTextField
+              sx={adminPageStyles(theme).textFieldName}
+              value={firstname}
+              setValue={setFirstname}
+              label="Prénom"
+            />
+            <CTextField
+              sx={adminPageStyles(theme).textFieldName}
+              value={lastname}
+              setValue={setLastname}
+              label="Nom"
+            />
+            <CSelect
+              sx={adminPageStyles(theme).textFieldName}
+              menuItems={availabiltySlectOptions}
+              label="Disponibilité"
+              value={availability}
+              setValue={setAvailability}
+              labelId={'availability'}
+            />
+          </Box>
+          <FormGroup sx={adminPageStyles(theme).checkboxWrapper}>
+            <FormControlLabel
+              control={
+                <Checkbox checked={dej} onChange={handleChange} name="dej" />
+              }
+              label="Déjeuner"
+            />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={balade}
+                  onChange={handleChange}
+                  name="balade"
+                  color="primary"
+                />
+              }
+              label="Après-midi"
+            />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={soiree}
+                  onChange={handleChange}
+                  name="soiree"
+                />
+              }
+              label="Soirée"
+              color="primary"
+            />
+          </FormGroup>
         </Box>
         <CLoadingIconButton
           onClick={() => {
             dispatch(resetAddFakeUserRequest());
             if (firstname !== '' && lastname !== '') {
+              let confirmation = null;
+              if (availability === 'Disponible') {
+                confirmation = true;
+              }
+              if (availability === 'Indisponible') {
+                confirmation = false;
+              }
               dispatch(
                 addFakeUserAsync({
                   body: {
+                    idCreator: idUser,
                     firstname: firstname,
                     lastname: lastname,
-                    confirmation:
-                      availability === 'Disponible'
-                        ? true
-                        : availability === 'Indisponible'
-                        ? false
-                        : null,
+                    confirmation: confirmation,
+                    confirmation_dej: dej,
+                    confirmation_balade: balade,
+                    confirmation_diner: soiree,
                   },
                 }),
               );

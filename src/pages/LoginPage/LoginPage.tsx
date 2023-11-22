@@ -93,14 +93,16 @@ const LoginPage = () => {
       <Box sx={loginPageStyles(theme).container(menuImage)}>
         {!isMobile && (
           <Box sx={loginPageStyles(theme).title}>
-            <Typography variant="h1">Anniversaire Dudu 2024</Typography>
+            <Typography variant="h1">
+              Anniversairen Phillipe et Sylvie 2024
+            </Typography>
           </Box>
         )}
         <Box sx={loginPageStyles(theme).loginContainer}>
           <Box sx={loginPageStyles(theme).boxLogin}>
             {isMobile && (
               <Typography variant="h1" sx={{ textAlign: 'center' }}>
-                Anniversaire Dudu 2024
+                Anniversaire Phillipe et Sylvie 2024
               </Typography>
             )}
             {isRegistering && !resetingPassword && (
@@ -127,7 +129,7 @@ const LoginPage = () => {
               type={showPassword ? 'text' : 'password'}
               sx={{ width: '100%' }}
               error={password.length < 8}
-              helperText={password.length > 8 ? '' : 'Minimum 8 caractères'}
+              helperText={password.length >= 8 ? '' : 'Minimum 8 caractères'}
               endAdornment={
                 <InputAdornment position="end">
                   <IconButton

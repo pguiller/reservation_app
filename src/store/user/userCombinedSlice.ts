@@ -1,19 +1,17 @@
 import { combineReducers } from '@reduxjs/toolkit';
 import getUserSlice from './userSlices/getUsersSlice';
-import addMemberSlice from './userSlices/addMemberSlice';
 import getUserByIdSlice from './userSlices/getUserByIdSlice';
 import updateConfirmationSlice from './userSlices/updateConfirmationSlice';
 import deleteUserSlice from './userSlices/deleteUserSlice';
-import deleteMemberSlice from './userSlices/deleteMemberSlice';
 import addFakeUserSlice from './userSlices/addFakeUser';
+import getUserByCreatorSlice from './userSlices/getUserByCreatorSlice';
 
 const userReducer = combineReducers({
   getUser: getUserSlice,
-  addMember: addMemberSlice,
   getUserById: getUserByIdSlice,
+  getUsersByCreator: getUserByCreatorSlice,
   updateConfirmation: updateConfirmationSlice,
   deleteUser: deleteUserSlice,
-  deleteMember: deleteMemberSlice,
   addFakeUser: addFakeUserSlice,
 });
 

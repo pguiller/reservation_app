@@ -16,10 +16,10 @@ import CLoadingIconButton from 'src/components/UI/CLoadingIconButton/CLoadingIco
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from 'src/store/store';
-import { deleteMemberAsync } from 'src/store/user/userAsync';
+import { deleteUserAsync } from 'src/store/user/userAsync';
 import { useAppSelector } from 'src/hooks';
 import { ReduxStatus } from 'src/utils/types/reduxStatusValues';
-import { removeMembersToUser } from 'src/store/user/userSlices/getUserByIdSlice';
+import { removeItemUserCreatorList } from 'src/store/user/userSlices/getUserByCreatorSlice';
 
 type TableMorePeopleProps = {
   data: MorePeopleData[];
@@ -29,18 +29,36 @@ const TableMorePeople = ({ data }: TableMorePeopleProps) => {
   const theme = useTheme();
   const dispatch = useDispatch<AppDispatch>();
 
-  const idUser = useAppSelector((state) => state.auth.login.userId);
-  const deleteMemberRequest = useAppSelector(
-    (state) => state.user.deleteMember,
+  const deleteUserRequest = useAppSelector((state) => state.user.deleteUser);
+  const getUserByIdCreatorRequest = useAppSelector(
+    (state) => state.user.getUsersByCreator,
   );
 
   const [idClicked, setIdClicked] = useState<number>(0);
 
   useEffect(() => {
-    if (deleteMemberRequest.status === ReduxStatus.Succeeded) {
-      dispatch(removeMembersToUser({ id: idClicked }));
+    if (deleteUserRequest.status === ReduxStatus.Succeeded) {
+      console.log(
+        getUserByIdCreatorRequest.data.findIndex(
+          (user) => user.Id === idClicked,
+        ),
+      );
+      dispatch(
+        removeItemUserCreatorList(
+          getUserByIdCreatorRequest.data.findIndex(
+            (user) => user.Id === idClicked,
+          ),
+        ),
+      );
     }
-  }, [deleteMemberRequest]);
+  }, [deleteUserRequest]);
+
+  useEffect(() => {
+    if (getUserByIdCreatorRequest.status === ReduxStatus.Succeeded) {
+      console.log(idClicked);
+      dispatch(deleteUserAsync(idClicked));
+    }
+  }, [idClicked]);
 
   return (
     <TableContainer sx={tableMorePeopleStyles(theme).tableContainer}>
@@ -54,7 +72,7 @@ const TableMorePeople = ({ data }: TableMorePeopleProps) => {
         </TableHead>
         <TableBody>
           {data.map((row) => (
-            <TableRow sx={tableMorePeopleStyles(theme).tableRow} key={row.id}>
+            <TableRow sx={tableMorePeopleStyles(theme).tableRow} key={row.Id}>
               <TableCell sx={tableMorePeopleStyles(theme).tableCell}>
                 <Tooltip title={row.firstname}>
                   <Box sx={tableMorePeopleStyles(theme).textContainer}>
@@ -72,15 +90,9 @@ const TableMorePeople = ({ data }: TableMorePeopleProps) => {
               <TableCell sx={tableMorePeopleStyles(theme).tableCell}>
                 <CLoadingIconButton
                   onClick={() => {
-                    setIdClicked(row.id);
-                    dispatch(
-                      deleteMemberAsync({
-                        id: idUser,
-                        body: { memberIds: [row.id] },
-                      }),
-                    );
+                    setIdClicked(row.Id);
                   }}
-                  isLoading={deleteMemberRequest.status === ReduxStatus.Loading}
+                  isLoading={deleteUserRequest.status === ReduxStatus.Loading}
                   icon={<PersonRemoveIcon color="secondary" />}
                   tooltip={'Supprimer'}
                 />
