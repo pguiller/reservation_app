@@ -8,7 +8,6 @@
     "@mui/icons-material": "^5.11.11",
     "@mui/lab": "^5.0.0-alpha.122",
     "@mui/material": "^5.11.14",
-    "@mui/x-charts": "^6.0.0-alpha.10",
     "@mui/x-data-grid": "^5.17.25",
     "@reduxjs/toolkit": "^1.9.3",
     "@testing-library/jest-dom": "^5.16.5",

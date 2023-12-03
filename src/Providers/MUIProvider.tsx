@@ -5,8 +5,6 @@ import {
   darkScrollbar,
 } from '@mui/material';
 import { createContext, useMemo, useState, useEffect } from 'react';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { MUILocaleData, supportedLocales } from './SupportedLocales';
 import { useAppSelector } from 'src/hooks';
 import { switchThemeMode } from 'src/store/navigation/navigationSlice';
@@ -205,7 +203,6 @@ export default function MUIWrapper({
           },
         },
         locale.muiCore as any,
-        locale.muiDatePicker,
         locale.muiDataGrid,
       ),
     [mode, locale],
@@ -219,15 +216,7 @@ export default function MUIWrapper({
         setLocale,
       }}
     >
-      <ThemeProvider theme={theme}>
-        <LocalizationProvider
-          dateAdapter={AdapterDayjs}
-          adapterLocale={locale.dayJSLanguage}
-          localeText={locale.muiDatePicker}
-        >
-          {children}
-        </LocalizationProvider>
-      </ThemeProvider>
+      <ThemeProvider theme={theme}>{children}</ThemeProvider>
     </MUIWrapperContext.Provider>
   );
 }
