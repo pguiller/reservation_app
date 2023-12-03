@@ -361,9 +361,11 @@ const LandingPage = () => {
             </Box>
           </Box>
         </CInfosCard>
-        <CInfosCard>
-          <TableMorePeople data={getUserByIdCreatorRequest.data} />
-        </CInfosCard>
+        {getUserByIdCreatorRequest.status === ReduxStatus.loading && (
+          <CInfosCard>
+            <TableMorePeople data={getUserByIdCreatorRequest.data} />
+          </CInfosCard>
+        )}
       </Box>
       <Box sx={landingPageStyles(theme).background(imageHome2)} />
       {/* ------------------------------------Troisimème wrapper------------------------------------ */}
