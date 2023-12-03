@@ -361,7 +361,7 @@ const LandingPage = () => {
             </Box>
           </Box>
         </CInfosCard>
-        {getUserByIdCreatorRequest.status === ReduxStatus.loading && (
+        {getUserByIdCreatorRequest.status === ReduxStatus.Loading && (
           <CInfosCard>
             <TableMorePeople data={getUserByIdCreatorRequest.data} />
           </CInfosCard>
