@@ -178,7 +178,7 @@ const LoginPage = () => {
             )}
             <CLoadingButton
               variant="contained"
-              disabled={password.length <= 8}
+              disabled={password.length < 8}
               loading={
                 loginRequest.status === ReduxStatus.Loading ||
                 registerRequest.status === ReduxStatus.Loading
