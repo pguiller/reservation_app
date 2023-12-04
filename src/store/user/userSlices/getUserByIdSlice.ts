@@ -27,24 +27,29 @@ const getUserByIdSlice = createSlice({
   initialState,
   reducers: {
     resetGetUserByIdRequest: () => initialState,
-    // addMembersToUser: (state, action) => {
-    //   const { member } = action.payload;
-    //   const newData = [...state.data.members];
+    setConfirmation: (state, action) => {
+      const {
+        confirmation,
+        confirmation_dej,
+        confirmation_balade,
+        confirmation_diner,
+      } = action.payload;
 
-    //   newData.push(member);
-    //   state.data.members = newData;
-    // },
-    // removeMembersToUser: (state, action) => {
-    //   const { id } = action.payload;
-    //   const newData = [...state.data.members];
-
-    //   const indexToRemove = newData.findIndex((member) => member.id === id);
-
-    //   if (indexToRemove !== -1) {
-    //     newData.splice(indexToRemove, 1);
-    //     state.data.members = newData;
-    //   }
-    // },
+      state.data.confirmation =
+        confirmation !== undefined ? confirmation : state.data.confirmation;
+      state.data.confirmation_dej =
+        confirmation_dej !== undefined
+          ? confirmation_dej
+          : state.data.confirmation_dej;
+      state.data.confirmation_balade =
+        confirmation_balade !== undefined
+          ? confirmation_balade
+          : state.data.confirmation_balade;
+      state.data.confirmation_diner =
+        confirmation_diner !== undefined
+          ? confirmation_diner
+          : state.data.confirmation_diner;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -64,10 +69,7 @@ const getUserByIdSlice = createSlice({
   },
 });
 
-export const {
-  resetGetUserByIdRequest,
-  // addMembersToUser,
-  // removeMembersToUser,
-} = getUserByIdSlice.actions;
+export const { resetGetUserByIdRequest, setConfirmation } =
+  getUserByIdSlice.actions;
 
 export default getUserByIdSlice.reducer;

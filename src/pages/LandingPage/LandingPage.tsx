@@ -47,6 +47,7 @@ import { useAppSelector } from 'src/hooks';
 import { ReduxStatus } from 'src/utils/types/reduxStatusValues';
 import { addItemUserCreatorList } from 'src/store/user/userSlices/getUserByCreatorSlice';
 import { resetAddFakeUserRequest } from 'src/store/user/userSlices/addFakeUser';
+import { setConfirmation } from 'src/store/user/userSlices/getUserByIdSlice';
 
 const LandingPage = () => {
   const theme = useTheme();
@@ -88,6 +89,19 @@ const LandingPage = () => {
   useEffect(() => {
     dispatch(getUserByIdsAsync(idUser));
   }, []);
+
+  useEffect(() => {
+    if (updateConfirmation.status === ReduxStatus.Succeeded) {
+      dispatch(
+        setConfirmation({
+          confirmation: availability === 'true',
+          confirmation_dej: dej,
+          confirmation_balade: balade,
+          confirmation_diner: soiree,
+        }),
+      );
+    }
+  }, [updateConfirmation]);
 
   useEffect(() => {
     if (getUserByIdRequest.status === ReduxStatus.Succeeded) {
