@@ -664,14 +664,16 @@ const AdminPage = () => {
           Invité créé.
         </Alert>
       )}
-      <DataTable
-        sx={{ fontFamily: 'unset' }}
-        columns={columnsUsers}
-        rows={dataRows}
-        pageSize={30}
-        rowsPerPageOptions={[5]}
-        loading={false}
-      />
+      {getUsersRequest.status === ReduxStatus.Loading && (
+        <DataTable
+          sx={{ fontFamily: 'unset' }}
+          columns={columnsUsers}
+          rows={dataRows}
+          pageSize={30}
+          rowsPerPageOptions={[5]}
+          loading={false}
+        />
+      )}
     </Box>
   );
 };
