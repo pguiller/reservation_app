@@ -149,12 +149,12 @@ const LandingPage = () => {
         <Box>
           <Typography variant="h6" color={'secondary'}>
             {
-              'Philippe et Sylvie vous invitent à partager une journée à St Sauveur en Puisaye le samedi 25 mai 2024.'
+              'Nous vous invitons à partager une journée à St Sauveur en Puisaye le samedi 25 mai 2024.'
             }
           </Typography>
           <Typography variant="h6" color={'secondary'}>
             {
-              'Nos 60 ans sont passés, ce sera nos 35 ans de mariage, une bonne occasion de faire la fête avec tous vous tous parents & amis.'
+              'Nos 60 ans sont passés, ce sera nos 35 ans de mariage, une bonne occasion de faire la fête avec vous tous parents & amis.'
             }
           </Typography>
         </Box>
