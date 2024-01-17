@@ -664,7 +664,7 @@ const AdminPage = () => {
           Invité créé.
         </Alert>
       )}
-      {getUsersRequest.status === ReduxStatus.Loading && (
+      {getUsersRequest.status === ReduxStatus.Succeeded && (
         <DataTable
           sx={{ fontFamily: 'unset' }}
           columns={columnsUsers}

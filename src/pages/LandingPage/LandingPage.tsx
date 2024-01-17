@@ -48,6 +48,7 @@ import { ReduxStatus } from 'src/utils/types/reduxStatusValues';
 import { addItemUserCreatorList } from 'src/store/user/userSlices/getUserByCreatorSlice';
 import { resetAddFakeUserRequest } from 'src/store/user/userSlices/addFakeUser';
 import { setConfirmation } from 'src/store/user/userSlices/getUserByIdSlice';
+import { resetUpdateConfirmationRequest } from 'src/store/user/userSlices/updateConfirmationSlice';
 
 const LandingPage = () => {
   const theme = useTheme();
@@ -88,6 +89,7 @@ const LandingPage = () => {
 
   useEffect(() => {
     dispatch(getUserByIdsAsync(idUser));
+    dispatch(resetUpdateConfirmationRequest());
   }, []);
 
   useEffect(() => {
@@ -237,6 +239,9 @@ const LandingPage = () => {
                 label="Soirée à partir de 19h : apéro, diner, soirée comme en 2019 !"
               />
             </FormGroup>
+            {updateConfirmation.status === ReduxStatus.Succeeded && (
+              <Typography color="secondary">Inscription validée.</Typography>
+            )}
             <CLoadingButton
               variant="contained"
               color="secondary"
@@ -375,7 +380,7 @@ const LandingPage = () => {
             </Box>
           </Box>
         </CInfosCard>
-        {getUserByIdCreatorRequest.status === ReduxStatus.Loading && (
+        {getUserByIdCreatorRequest.status === ReduxStatus.Succeeded && (
           <CInfosCard>
             <TableMorePeople data={getUserByIdCreatorRequest.data} />
           </CInfosCard>
