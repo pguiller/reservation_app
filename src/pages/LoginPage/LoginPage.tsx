@@ -3,6 +3,7 @@ import {
   Box,
   IconButton,
   InputAdornment,
+  Link,
   Snackbar,
   Typography,
   useTheme,
@@ -209,9 +210,19 @@ const LoginPage = () => {
             >
               {isRegistering ? 'Valider' : 'Se connecter'}
             </CLoadingButton>
-            <CButton onClick={() => setIsRegistering(!isRegistering)}>
-              {isRegistering ? 'Annuler' : "S'inscrire"}
-            </CButton>
+            {isRegistering && (
+              <CButton onClick={() => setIsRegistering(!isRegistering)}>
+                Annuler
+              </CButton>
+            )}
+            {!isRegistering && (
+              <Link
+                sx={{ cursor: 'pointer' }}
+                onClick={() => setIsRegistering(!isRegistering)}
+              >
+                {"Pour s'inscrire cliquez ici"}
+              </Link>
+            )}
             {resetPasswordRequest.status === ReduxStatus.Succeeded && (
               <Alert severity="success">Mot de passe modifié.</Alert>
             )}
