@@ -147,18 +147,18 @@ const AdminPage = () => {
                 .confirmation === true
               ? 'Disponible'
               : dataRows[
-                  dataRows.findIndex((user) => user.id === params.row.id)
-                ].confirmation === false
-              ? 'Indisponible'
-              : 'Non répondu'
+                    dataRows.findIndex((user) => user.id === params.row.id)
+                  ].confirmation === false
+                ? 'Indisponible'
+                : 'Non répondu'
             : 'Non répondu';
 
         const severity =
           defaultAvailability === 'Indisponible'
             ? 'error'
             : defaultAvailability === 'Disponible'
-            ? 'success'
-            : 'warning';
+              ? 'success'
+              : 'warning';
 
         return (
           <>
@@ -373,37 +373,37 @@ const AdminPage = () => {
                           ? selectedModifyOption[params.row.id] === 'Disponible'
                             ? true
                             : selectedModifyOption[params.row.id] ===
-                              'Indisponible'
-                            ? false
-                            : null
+                                'Indisponible'
+                              ? false
+                              : null
                           : params.row.confirmation,
                         confirmation_dej:
                           selectedModifyOption[params.row.id] === 'Indisponible'
                             ? false
                             : selectedModifyOption[params.row.id] ===
-                              'Non Répondu'
-                            ? null
-                            : dejRow !== null
-                            ? dejRow
-                            : false,
+                                'Non Répondu'
+                              ? null
+                              : dejRow !== null
+                                ? dejRow
+                                : false,
                         confirmation_balade:
                           selectedModifyOption[params.row.id] === 'Indisponible'
                             ? false
                             : selectedModifyOption[params.row.id] ===
-                              'Non Répondu'
-                            ? null
-                            : baladeRow !== null
-                            ? baladeRow
-                            : false,
+                                'Non Répondu'
+                              ? null
+                              : baladeRow !== null
+                                ? baladeRow
+                                : false,
                         confirmation_diner:
                           selectedModifyOption[params.row.id] === 'Indisponible'
                             ? false
                             : selectedModifyOption[params.row.id] ===
-                              'Non Répondu'
-                            ? null
-                            : soireeRow !== null
-                            ? soireeRow
-                            : false,
+                                'Non Répondu'
+                              ? null
+                              : soireeRow !== null
+                                ? soireeRow
+                                : false,
                       },
                     }),
                   );
@@ -483,14 +483,14 @@ const AdminPage = () => {
           ] === 'Disponible'
             ? true
             : selectedModifyOption[
-                getUsersRequest.data[
-                  getUsersRequest.data.findIndex(
-                    (user) => user.id === isEditingId,
-                  )
-                ].id
-              ] === 'Indisponible'
-            ? false
-            : null;
+                  getUsersRequest.data[
+                    getUsersRequest.data.findIndex(
+                      (user) => user.id === isEditingId,
+                    )
+                  ].id
+                ] === 'Indisponible'
+              ? false
+              : null;
       } else {
         confirmationValue =
           getUsersRequest.data[
