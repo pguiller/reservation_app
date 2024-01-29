@@ -95,7 +95,7 @@ const LoginPage = () => {
         {!isMobile && (
           <Box sx={loginPageStyles(theme).title}>
             <Typography variant="h1">
-              Anniversaire Phillipe et Sylvie 2024
+              Anniversaire Philippe et Sylvie 2024
             </Typography>
           </Box>
         )}
@@ -103,7 +103,7 @@ const LoginPage = () => {
           <Box sx={loginPageStyles(theme).boxLogin}>
             {isMobile && (
               <Typography variant="h1" sx={{ textAlign: 'center' }}>
-                Anniversaire Phillipe et Sylvie 2024
+                Anniversaire Philippe et Sylvie 2024
               </Typography>
             )}
             {isRegistering && !resetingPassword && (

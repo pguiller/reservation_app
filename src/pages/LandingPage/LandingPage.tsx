@@ -47,6 +47,8 @@ import { useAppSelector } from 'src/hooks';
 import { ReduxStatus } from 'src/utils/types/reduxStatusValues';
 import { addItemUserCreatorList } from 'src/store/user/userSlices/getUserByCreatorSlice';
 import { resetAddFakeUserRequest } from 'src/store/user/userSlices/addFakeUser';
+import { setConfirmation } from 'src/store/user/userSlices/getUserByIdSlice';
+import { resetUpdateConfirmationRequest } from 'src/store/user/userSlices/updateConfirmationSlice';
 
 const LandingPage = () => {
   const theme = useTheme();
@@ -87,7 +89,21 @@ const LandingPage = () => {
 
   useEffect(() => {
     dispatch(getUserByIdsAsync(idUser));
+    dispatch(resetUpdateConfirmationRequest());
   }, []);
+
+  useEffect(() => {
+    if (updateConfirmation.status === ReduxStatus.Succeeded) {
+      dispatch(
+        setConfirmation({
+          confirmation: availability === 'true',
+          confirmation_dej: dej,
+          confirmation_balade: balade,
+          confirmation_diner: soiree,
+        }),
+      );
+    }
+  }, [updateConfirmation]);
 
   useEffect(() => {
     if (getUserByIdRequest.status === ReduxStatus.Succeeded) {
@@ -135,12 +151,12 @@ const LandingPage = () => {
         <Box>
           <Typography variant="h6" color={'secondary'}>
             {
-              'Philippe et Sylvie vous invitent à partager une journée à St Sauveur en Puisaye le samedi 25 mai 2024.'
+              'Nous vous invitons à partager une journée à St Sauveur en Puisaye le samedi 25 mai 2024.'
             }
           </Typography>
           <Typography variant="h6" color={'secondary'}>
             {
-              'Nos 60 ans sont passés, ce sera nos 35 ans de mariage, une bonne occasion de faire la fête avec tous vous tous parents & amis.'
+              'Nos 60 ans sont passés, ce sera nos 35 ans de mariage, une bonne occasion de faire la fête avec vous tous parents & amis.'
             }
           </Typography>
         </Box>
@@ -223,6 +239,9 @@ const LandingPage = () => {
                 label="Soirée à partir de 19h : apéro, diner, soirée comme en 2019 !"
               />
             </FormGroup>
+            {updateConfirmation.status === ReduxStatus.Succeeded && (
+              <Typography color="secondary">Inscription validée.</Typography>
+            )}
             <CLoadingButton
               variant="contained"
               color="secondary"
@@ -361,7 +380,7 @@ const LandingPage = () => {
             </Box>
           </Box>
         </CInfosCard>
-        {getUserByIdCreatorRequest.status === ReduxStatus.Loading && (
+        {getUserByIdCreatorRequest.status === ReduxStatus.Succeeded && (
           <CInfosCard>
             <TableMorePeople data={getUserByIdCreatorRequest.data} />
           </CInfosCard>
